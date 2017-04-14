@@ -1,0 +1,324 @@
+;------------------------------------------------------------------------------
+; général
+;------------------------------------------------------------------------------
+;J'ai déjà vu le message de démarrage...
+(setq inhibit-startup-message t)
+
+;Titre de la fenêtre
+(setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
+
+;Barre d'etat
+(line-number-mode t)
+(column-number-mode t)
+(which-func-mode 1)
+
+;Completion des commandes
+(icomplete-mode)
+
+; On demarre en mode texte et c'est le mode par défaut
+(setq initial-major-mode 'text-mode)
+(setq default-major-mode 'text-mode)
+
+; On n'ajoute pas de nouvelle ligne quand le cuseur descend a la fin du buffeur
+(setq next-line-add-newlines nil)
+
+; ne pas faire de bip mais un 'flash'
+; (setq visible-bell t)
+
+; dico français
+(setq ispell-dictionary "francais")
+
+;ido mode (parcour des repertoires)
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
+
+; Better buffer names
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+;------------------------------------------------------------------------------
+; Racourcis perso (pas trop pour pas être perdu sur un emacs "from scratch")
+;------------------------------------------------------------------------------
+;Ctrl X Shift f : Ouvre le fichier pointé
+(global-set-key [(ctrl x)(shift f)] 'find-file-at-point)
+
+;Ctrl X Ctrl l: Allez à la ligne X.
+(global-set-key [(ctrl x)(ctrl l)] 'goto-line)
+
+
+
+;------------------------------------------------------------------------------
+; Correction Delete/backspace (si necessaire)
+; Note : utiliser ce code que si ça marche pas déjà :
+; Avec ce code, le backspace ne marche pas pendant une recherche
+;------------------------------------------------------------------------------
+;(global-unset-key [backspace] )
+;(global-set-key [backspace] 'backward-delete-char-untabify)
+;(global-unset-key [delete] )
+;(global-set-key [delete] 'delete-char)
+
+;(global-set-key [C-delete] 'kill-word)
+;(global-set-key [C-backspace] 'backward-kill-word)
+;(global-set-key [M-right] 'forward-word)
+;(global-set-key [M-left] 'backward-word)
+
+
+
+;------------------------------------------------------------------------------
+; Couleurs / Police
+;------------------------------------------------------------------------------
+;(set-default-font "7*14")
+(set-foreground-color "gray")
+(set-background-color "black")
+(set-cursor-color "darkslateblue")
+;(set-face-background 'modeline "darkslateblue")
+;(set-face-foreground 'modeline "lemonchiffon")
+
+
+
+
+;------------------------------------------------------------------------------
+; Gestion de la souris
+;------------------------------------------------------------------------------
+
+;Molette
+;-------
+;On peut soit utiliser la gestion automatique, avec :
+;(mouse-wheel-mode)
+;Ou alors faire toute la config soit-même :
+;Molette : 5 lignes
+(defun up-slightly () (interactive) (scroll-up 5))
+(defun down-slightly () (interactive) (scroll-down 5))
+(global-set-key [mouse-4] 'down-slightly)
+(global-set-key [mouse-5] 'up-slightly) 
+;Shift-molette : 1 ligne
+(defun up-one () (interactive) (scroll-up 1))
+(defun down-one () (interactive) (scroll-down 1))
+(global-set-key [S-mouse-4] 'down-one)
+(global-set-key [S-mouse-5] 'up-one) 
+;Ctrl-molette : page
+(defun up-a-lot() (interactive)(scroll-up))
+(defun down-a-lot () (interactive) (scroll-down))
+(global-set-key [C-mouse-4] 'down-a-lot)
+(global-set-key [C-mouse-5] 'up-a-lot)
+
+; Copié à la souris
+(setq mouse-drag-copy-region t)
+
+; Le 'colé' la souris se fait à l'endroit du curseur de texte, pas du pointeur
+(setq mouse-yank-at-point t)
+
+; Le curseur de la souris se barre sour la frappe du texte 
+;(mouse-avoidance-mode  'animate)
+
+;(setq mouse-drag-copy-region nil)  ; stops selection with a mouse being immediately injected to the kill ring
+;(setq x-select-enable-primary nil)  ; stops killing/yanking interacting with primary X11 selection
+;(setq x-select-enable-clipboard t)  ; makes killing/yanking interact with clipboard X11 selection
+
+
+;------------------------------------------------------------------------------
+; Configuration générale liée au développement
+;------------------------------------------------------------------------------
+
+;On veut des couleurs
+(global-font-lock-mode 'on)
+
+;Taille limite du buffeur pour afficher les couleurs
+(custom-set-variables
+ '(font-lock-maximum-size 1256000))
+(custom-set-faces)
+
+;Affichage des parentese
+(show-paren-mode t)
+
+;Ctrl Shift + direction : se déplace par bloc de code (dépend du language)
+(global-set-key [(ctrl shift right)] 'forward-sexp)
+(global-set-key [(ctrl shift left)] 'backward-sexp)
+
+; utiliser le control de version emacs
+; (setq version-control t)
+
+; aide en ligne
+(global-set-key [(f1)] (lambda () (interactive) (manual-entry (current-word))))
+
+;pas de tab mais des espaces
+(setq-default indent-tabs-mode nil) 
+(setq-default tab-width 4)
+
+; Indentation C : pas d'espaces avant les parenthèses
+(c-set-offset 'substatement-open '0)
+(c-set-offset 'brace-list-open '0)
+(c-set-offset 'statement-case-open '0)
+
+; Indentation Python (4 caracteres)
+(setq python-mode-hook
+      '(lambda () (progn
+                    (set-variable 'py-indent-offset 4)
+                    (set-variable 'py-smart-indentation nil)
+                    (set-variable 'indent-tabs-mode nil) )))
+
+
+
+;------------------------------------------------------------------------------
+; Trouver les chars invalides pour la locacle courrante
+;------------------------------------------------------------------------------
+(defun find-next-unsafe-char (&optional coding-system)
+  "Find the next character in the buffer that cannot be encoded by
+coding-system. If coding-system is unspecified, default to the coding
+system that would be used to save this buffer. With prefix argument,
+prompt the user for a coding system."
+  (interactive "Zcoding-system: ")
+  (if (stringp coding-system) (setq coding-system (intern coding-system)))
+  (if coding-system nil
+    (setq coding-system
+          (or save-buffer-coding-system buffer-file-coding-system)))
+  (let ((found nil) (char nil) (csets nil) (safe nil))
+    (setq safe (coding-system-get coding-system 'safe-chars))
+    ;; some systems merely specify the charsets as ones they can encode:
+    (setq csets (coding-system-get coding-system 'safe-charsets))
+    (save-excursion
+      ;;(message "zoom to <")
+      (let ((end  (point-max))
+            (here (point    ))
+            (char  nil))
+        (while (and (< here end) (not found))
+          (setq char (char-after here))
+          (if (or (eq safe t)
+                  (< char ?\177)
+                  (and safe  (aref safe char))
+                  (and csets (memq (char-charset char) csets)))
+              nil ;; safe char, noop
+            (setq found (cons here char)))
+          (setq here (1+ here))) ))
+    (and found (goto-char (1+ (car found))))
+    found))
+
+
+;------------------------------------------------------------------------------
+; Alias port les tags
+; CECI DOIT ETRE REECRIT. Emacs lag au demarrage. (appel recursif)
+;------------------------------------------------------------------------------
+;; (defun find-tag-next () (interactive) (find-tag "" t))
+;; (global-set-key [(control \;)] 'find-tag)
+;; (global-set-key [(control \.)] 'find-tag-next)
+
+
+;; (defun upward-find-file (filename &optional startdir)
+;;   "Move up directories until we find a certain filename. If we
+;; manage to find it, return the containing directory. Else if we
+;; get to the toplevel directory and still can't find it, return
+;; nil. Start at startdir or . if startdir not given"
+;;   (let ((dirname (expand-file-name
+;;                   (if startdir startdir ".")))
+;;         (found nil) ; found is set as a flag to leave loop if we find it
+;;         (top nil)) ; top is set when we get
+;;     ;; to / so that we only check it once
+;;     ;; While we've neither been at the top last time nor have we found
+;;     ;; the file.
+;;     (while (not (or found top))
+;;       ;; If we're at / set top flag.
+;;       (if (string= (expand-file-name dirname) "/")
+;;           (setq top t))
+;;       ;; Check for the file
+;;       (if (file-exists-p (expand-file-name filename dirname))
+;;           (setq found t)
+;;         ;; If not, move up a directory
+;;         (setq dirname (expand-file-name ".." dirname))))
+;;     ;; return statement
+;;     (if found dirname nil)))
+
+;; (let ((my-tags-file (upward-find-file "TAGS")))
+;;   (when my-tags-file
+;;     (message "Loading tags file: %s" my-tags-file)
+;;     (visit-tags-table my-tags-file)))
+
+
+;------------------------------------------------------------------------------
+; chargement des extentions
+;------------------------------------------------------------------------------
+(setq load-path (nconc '("~/.config/emacs/lisp") load-path))
+
+; Helper pour le CSV
+;(setq load-path (nconc '("~/.config/emacs/lisp/org-7.5/lisp") load-path))
+(defun csv-region ()
+  (interactive)
+  (load-library "org-table")
+  (org-table-convert-region (region-beginning) (region-end) )
+)
+
+;XML mode
+(setq load-path (nconc '("~/.config/emacs/lisp/nxml") load-path))
+(autoload 'nxml-mode "rng-auto" "" t)
+(add-hook 'xml-mode-hook 'turn-on-font-lock)
+(setq auto-mode-alist
+      (append
+       (list
+	'("\\.xml" . nxml-mode)
+	'("\\.xsd" . nxml-mode)
+	'("\\.html" . nxml-mode)
+	'("\\.htm" . nxml-mode)
+	'("\\.xhtml" . nxml-mode)
+	)
+       auto-mode-alist))
+
+;XSL mode
+(autoload 'xsl-mode "xslide" "Major mode for XSL stylesheets." t)
+(add-hook 'xsl-mode-hook 'turn-on-font-lock)
+(setq auto-mode-alist
+      (append
+       (list
+	'("\\.fo" . xsl-mode)
+	'("\\.xsl" . xsl-mode)
+	)
+       auto-mode-alist))
+
+;bat-mode
+(autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
+(setq auto-mode-alist 
+      (append 
+       (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
+       ;; For DOS init files
+       (list (cons "CONFIG\\."   'bat-mode))
+       (list (cons "AUTOEXEC\\." 'bat-mode))
+       auto-mode-alist))
+
+
+;javascript-mode
+(autoload 'js2-mode "js2" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+
+
+;sh-mode
+(setq auto-mode-alist
+      (append
+       (list
+	'("kshrc" . sh-mode)
+	'("profile" . sh-mode)
+	)
+       auto-mode-alist))
+
+;yaml-mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+; colored diff
+(require 'diff-mode-)
+
+; Une ch'tite bibliothèque pour utiliser une pile de marqueurs
+(require 'marker-visit)
+(global-set-key [M-right] 'marker-visit-next)
+(global-set-key [M-left] 'marker-visit-prev)
+(global-set-key [M-down] 'marker-visit-truncate-mark-ring)
+
+; clearcase perso
+(load-library "clearcase")
+
+
+; groovy mode
+(autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
+(add-to-list 'auto-mode-alist '("\\.groovy\\'" . groovy-mode))
+(add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+
+
