@@ -5,13 +5,22 @@
 @REM usage: call context_menu_add.cmd <file_pattern> <key_name> <command> <label>
 @REM <file_pattern>: something like '*' or '.bat' or 'Directory'
 @REM <key_name>    : Aphabetical string for the key
-@REM <command>     : command to call (might include %%%%1)
+@REM <command>     : command to call (file path will be appended)
 @REM <label>       : Text to display
 
 @set KEY="HKEY_CLASSES_ROOT\%1\shell\%2"
 @set KEY_CMD="HKEY_CLASSES_ROOT\%1\shell\%2\Command"
 
-reg.exe add %KEY% /ve /t REG_EXPAND_SZ /d %4%
-reg.exe add %KEY_CMD% /ve /t REG_EXPAND_SZ /d %3%
+reg.exe add %KEY% /ve /t REG_EXPAND_SZ /d %4
+reg.exe add %KEY_CMD% /ve /t REG_EXPAND_SZ /d "%3 %%1"
+
+
+@if %1 == Directory (
+    set KEY="HKEY_CLASSES_ROOT\%1\Background\shell\%2"
+    set KEY_CMD="HKEY_CLASSES_ROOT\%1\Background\shell\%2\Command"
+    
+    reg.exe add !KEY! /ve /t REG_EXPAND_SZ /d %4
+    reg.exe add !KEY_CMD! /ve /t REG_EXPAND_SZ /d "%3 %%V"
+)
 
 pause
