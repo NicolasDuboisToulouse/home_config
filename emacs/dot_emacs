@@ -321,8 +321,11 @@ prompt the user for a coding system."
 (add-to-list 'auto-mode-alist '("\\.groovy\\'" . groovy-mode))
 (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
 
-; acsii mode
+; acsii-doc mode
 (autoload 'adoc-mode "adoc-mode" "adoc-mode" t)
 (add-to-list 'auto-mode-alist '("\\.adoc\\'" . adoc-mode))
 (add-hook 'adoc-mode-hook (lambda() (buffer-face-mode t)))
 
+; markdown
+(autoload 'markdown-mode "markdown-mode" "markdown-mode" t)
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
