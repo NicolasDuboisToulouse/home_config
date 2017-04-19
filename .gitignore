@@ -1,2 +1,10 @@
 *.elc
 *~
+
+# We only push some sub-folders of <home>/.config
+/*
+!emacs
+!LICENSE
+!README.md
+!.gitignore
+
