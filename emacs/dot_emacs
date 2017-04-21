@@ -329,3 +329,10 @@ prompt the user for a coding system."
 ; markdown
 (autoload 'markdown-mode "markdown-mode" "markdown-mode" t)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+; powershell
+(autoload 'powershell-mode "powershell-mode" "powershell-mode" t)
+(add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
+
+
+
