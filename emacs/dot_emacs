@@ -4,6 +4,11 @@
 ;J'ai déjà vu le message de démarrage...
 (setq inhibit-startup-message t)
 
+; UTF-8 *always*
+(prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+
 ;Titre de la fenêtre
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
 
