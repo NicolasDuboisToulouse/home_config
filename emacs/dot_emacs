@@ -4,10 +4,11 @@
 ;J'ai déjà vu le message de démarrage...
 (setq inhibit-startup-message t)
 
-; UTF-8 *always*
+
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
+
 
 ;Titre de la fenêtre
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
@@ -327,9 +328,7 @@ prompt the user for a coding system."
 (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
 
 ; acsii-doc mode
-(autoload 'adoc-mode "adoc-mode" "adoc-mode" t)
-(add-to-list 'auto-mode-alist '("\\.adoc\\'" . adoc-mode))
-(add-hook 'adoc-mode-hook (lambda() (buffer-face-mode t)))
+(load-library "snp-adoc")
 
 ; markdown
 (autoload 'markdown-mode "markdown-mode" "markdown-mode" t)
@@ -338,6 +337,5 @@ prompt the user for a coding system."
 ; powershell
 (autoload 'powershell-mode "powershell-mode" "powershell-mode" t)
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
-
 
 

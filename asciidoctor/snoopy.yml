@@ -191,13 +191,15 @@ image:
 prose:
   margin_top: $block_margin_top
   margin_bottom: $block_margin_bottom
+# Snoopy HACK: used to insert spaces...
 sidebar:
-  background_color: eeeeee
-  border_color: e1e1e1
-  border_radius: $base_border_radius
-  border_width: $base_border_width
+  background_color: $page_background_color
+#  border_color: e1e1e1
+#  border_radius: $base_border_radius
+#  border_width: $base_border_width
+  margin_top: $vertical_rhythm
   # FIXME reenable padding bottom once margin collapsing is implemented
-  padding: [$vertical_rhythm, $vertical_rhythm * 1.25, 0, $vertical_rhythm * 1.25]
+#  padding: [$vertical_rhythm, $vertical_rhythm * 1.25, 0, $vertical_rhythm * 1.25]
   title:
     align: center
     font_color: $heading_font_color
