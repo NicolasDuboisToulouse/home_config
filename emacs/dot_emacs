@@ -338,4 +338,9 @@ prompt the user for a coding system."
 (autoload 'powershell-mode "powershell-mode" "powershell-mode" t)
 (add-to-list 'auto-mode-alist '("\\.ps1\\'" . powershell-mode))
 
+; css mode
+(autoload 'css-mode "css-mode")
+(setq auto-mode-alist
+      (cons '("\\.css\\'" . css-mode) auto-mode-alist))
+
 
