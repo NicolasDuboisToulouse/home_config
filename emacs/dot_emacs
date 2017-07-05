@@ -1,79 +1,51 @@
 ;------------------------------------------------------------------------------
-; général
+; Global
 ;------------------------------------------------------------------------------
-;J'ai déjà vu le message de démarrage...
+; Hide start-up message
 (setq inhibit-startup-message t)
 
-
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
-
-
-;Titre de la fenêtre
+; Windows title
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
 
-;Barre d'etat
+; Bottom bar
 (line-number-mode t)
 (column-number-mode t)
 (which-func-mode 1)
 
-;Completion des commandes
+; Command completion
 (icomplete-mode)
 
-; On demarre en mode texte et c'est le mode par défaut
+; Text mode by default
 (setq initial-major-mode 'text-mode)
 (setq default-major-mode 'text-mode)
 
-; On n'ajoute pas de nouvelle ligne quand le cuseur descend a la fin du buffeur
+; No automatic new-line
 (setq next-line-add-newlines nil)
 
-; ne pas faire de bip mais un 'flash'
-; (setq visible-bell t)
-
-; dico français
+; French...
 (setq ispell-dictionary "francais")
 
-;ido mode (parcour des repertoires)
-(require 'ido)
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode t)
-
-; Better buffer names
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;------------------------------------------------------------------------------
-; Racourcis perso (pas trop pour pas être perdu sur un emacs "from scratch")
+; Unix-mode
 ;------------------------------------------------------------------------------
-;Ctrl X Shift f : Ouvre le fichier pointé
-(global-set-key [(ctrl x)(shift f)] 'find-file-at-point)
+(prefer-coding-system 'utf-8-unix)
+;(setq coding-system-for-read 'utf-8-unix)
+(setq coding-system-for-write 'utf-8-unix)
+(defalias 'dos2unix 'delete-trailing-whitespace)
 
-;Ctrl X Ctrl l: Allez à la ligne X.
+
+
+;------------------------------------------------------------------------------
+; Personnal shortcuts
+;------------------------------------------------------------------------------
+;Ctrl X Ctrl l: goto line
 (global-set-key [(ctrl x)(ctrl l)] 'goto-line)
 
 
 
 ;------------------------------------------------------------------------------
-; Correction Delete/backspace (si necessaire)
-; Note : utiliser ce code que si ça marche pas déjà :
-; Avec ce code, le backspace ne marche pas pendant une recherche
-;------------------------------------------------------------------------------
-;(global-unset-key [backspace] )
-;(global-set-key [backspace] 'backward-delete-char-untabify)
-;(global-unset-key [delete] )
-;(global-set-key [delete] 'delete-char)
-
-;(global-set-key [C-delete] 'kill-word)
-;(global-set-key [C-backspace] 'backward-kill-word)
-;(global-set-key [M-right] 'forward-word)
-;(global-set-key [M-left] 'backward-word)
-
-
-
-;------------------------------------------------------------------------------
-; Couleurs / Police
+; font/color
 ;------------------------------------------------------------------------------
 ;(set-default-font "7*14")
 (set-foreground-color "gray")
@@ -83,92 +55,58 @@
 ;(set-face-foreground 'modeline "lemonchiffon")
 
 
-
-
 ;------------------------------------------------------------------------------
-; Gestion de la souris
+; Mouse managment
 ;------------------------------------------------------------------------------
-
-;Molette
-;-------
-;On peut soit utiliser la gestion automatique, avec :
-;(mouse-wheel-mode)
-;Ou alors faire toute la config soit-même :
-;Molette : 5 lignes
+; Wheel : 5 lignes
 (defun up-slightly () (interactive) (scroll-up 5))
 (defun down-slightly () (interactive) (scroll-down 5))
 (global-set-key [mouse-4] 'down-slightly)
 (global-set-key [mouse-5] 'up-slightly) 
-;Shift-molette : 1 ligne
+;Shift-Whell : 1 ligne
 (defun up-one () (interactive) (scroll-up 1))
 (defun down-one () (interactive) (scroll-down 1))
 (global-set-key [S-mouse-4] 'down-one)
 (global-set-key [S-mouse-5] 'up-one) 
-;Ctrl-molette : page
+;Ctrl-Whell : page
 (defun up-a-lot() (interactive)(scroll-up))
 (defun down-a-lot () (interactive) (scroll-down))
 (global-set-key [C-mouse-4] 'down-a-lot)
 (global-set-key [C-mouse-5] 'up-a-lot)
 
-; Copié à la souris
+; Copy/paste
 (setq mouse-drag-copy-region t)
-
-; Le 'colé' la souris se fait à l'endroit du curseur de texte, pas du pointeur
 (setq mouse-yank-at-point t)
 
-; Le curseur de la souris se barre sour la frappe du texte 
-;(mouse-avoidance-mode  'animate)
-
-;(setq mouse-drag-copy-region nil)  ; stops selection with a mouse being immediately injected to the kill ring
-;(setq x-select-enable-primary nil)  ; stops killing/yanking interacting with primary X11 selection
-;(setq x-select-enable-clipboard t)  ; makes killing/yanking interact with clipboard X11 selection
-
 
 ;------------------------------------------------------------------------------
-; Configuration générale liée au développement
+; Developement configuration
 ;------------------------------------------------------------------------------
-
-;On veut des couleurs
+; Colors...
 (global-font-lock-mode 'on)
-
-;Taille limite du buffeur pour afficher les couleurs
 (custom-set-variables
  '(font-lock-maximum-size 1256000))
 (custom-set-faces)
 
-;Affichage des parentese
+; Display parenthesis
 (show-paren-mode t)
 
-;Ctrl Shift + direction : se déplace par bloc de code (dépend du language)
+;Ctrl Shift + direction : moving by block
 (global-set-key [(ctrl shift right)] 'forward-sexp)
 (global-set-key [(ctrl shift left)] 'backward-sexp)
 
-; utiliser le control de version emacs
-; (setq version-control t)
-
-; aide en ligne
-(global-set-key [(f1)] (lambda () (interactive) (manual-entry (current-word))))
-
-;pas de tab mais des espaces
+; Never use tab but spaces
 (setq-default indent-tabs-mode nil) 
 (setq-default tab-width 4)
 
-; Indentation C : pas d'espaces avant les parenthèses
+; Special cases for C source
 (c-set-offset 'substatement-open '0)
 (c-set-offset 'brace-list-open '0)
 (c-set-offset 'statement-case-open '0)
 
-; Indentation Python (4 caracteres)
-(setq python-mode-hook
-      '(lambda () (progn
-                    (set-variable 'py-indent-offset 4)
-                    (set-variable 'py-smart-indentation nil)
-                    (set-variable 'indent-tabs-mode nil) )))
-
-
 
 ;------------------------------------------------------------------------------
-; Trouver les chars invalides pour la locacle courrante
+; Invalid char lookup
 ;------------------------------------------------------------------------------
 (defun find-next-unsafe-char (&optional coding-system)
   "Find the next character in the buffer that cannot be encoded by
@@ -203,51 +141,21 @@ prompt the user for a coding system."
 
 
 ;------------------------------------------------------------------------------
-; Alias port les tags
-; CECI DOIT ETRE REECRIT. Emacs lag au demarrage. (appel recursif)
-;------------------------------------------------------------------------------
-;; (defun find-tag-next () (interactive) (find-tag "" t))
-;; (global-set-key [(control \;)] 'find-tag)
-;; (global-set-key [(control \.)] 'find-tag-next)
-
-
-;; (defun upward-find-file (filename &optional startdir)
-;;   "Move up directories until we find a certain filename. If we
-;; manage to find it, return the containing directory. Else if we
-;; get to the toplevel directory and still can't find it, return
-;; nil. Start at startdir or . if startdir not given"
-;;   (let ((dirname (expand-file-name
-;;                   (if startdir startdir ".")))
-;;         (found nil) ; found is set as a flag to leave loop if we find it
-;;         (top nil)) ; top is set when we get
-;;     ;; to / so that we only check it once
-;;     ;; While we've neither been at the top last time nor have we found
-;;     ;; the file.
-;;     (while (not (or found top))
-;;       ;; If we're at / set top flag.
-;;       (if (string= (expand-file-name dirname) "/")
-;;           (setq top t))
-;;       ;; Check for the file
-;;       (if (file-exists-p (expand-file-name filename dirname))
-;;           (setq found t)
-;;         ;; If not, move up a directory
-;;         (setq dirname (expand-file-name ".." dirname))))
-;;     ;; return statement
-;;     (if found dirname nil)))
-
-;; (let ((my-tags-file (upward-find-file "TAGS")))
-;;   (when my-tags-file
-;;     (message "Loading tags file: %s" my-tags-file)
-;;     (visit-tags-table my-tags-file)))
-
-
-;------------------------------------------------------------------------------
-; chargement des extentions
+; plugins
 ;------------------------------------------------------------------------------
 (setq load-path (nconc '("~/.config/emacs/lisp") load-path))
 
-; Helper pour le CSV
-;(setq load-path (nconc '("~/.config/emacs/lisp/org-7.5/lisp") load-path))
+;ido mode (folder browsing)
+(require 'ido)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode t)
+
+; Better buffer names
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+
+; CSV using ORG mode
 (defun csv-region ()
   (interactive)
   (load-library "org-table")
@@ -312,15 +220,14 @@ prompt the user for a coding system."
 ; colored diff
 (require 'diff-mode-)
 
-; Une ch'tite bibliothèque pour utiliser une pile de marqueurs
+; Markers
 (require 'marker-visit)
 (global-set-key [M-right] 'marker-visit-next)
 (global-set-key [M-left] 'marker-visit-prev)
 (global-set-key [M-down] 'marker-visit-truncate-mark-ring)
 
-; clearcase perso
+; clearcase
 (load-library "clearcase")
-
 
 ; groovy mode
 (autoload 'groovy-mode "groovy-mode" "Major mode for editing Groovy code." t)
@@ -343,4 +250,9 @@ prompt the user for a coding system."
 (setq auto-mode-alist
       (cons '("\\.css\\'" . css-mode) auto-mode-alist))
 
-
+; Python
+(setq python-mode-hook
+      '(lambda () (progn
+                    (set-variable 'py-indent-offset 4)
+                    (set-variable 'py-smart-indentation nil)
+                    (set-variable 'indent-tabs-mode nil) )))

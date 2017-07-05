@@ -5,9 +5,7 @@ Checkout in <home>/.config/emacs
 # ln -s ~/.config/emacs/dot_emacs ~/.emacs
 
 * Windows: 
-  DOT NOT EDIT %HOME%/.emacs 
-  edit %HOME%/.config/emacs/dot_emacs
-  run EACH TIME win32_update_dotEmacs.bat
+ Use mklink as admin
 
 ** Windows context menu
    Edit emacs_context_menu.reg to setup emacs path
