@@ -26,6 +26,12 @@
 (setq ispell-dictionary "francais")
 
 
+; Ignore warning on large modifications witch can not be stored for undo
+(custom-set-variables
+ '(warning-suppress-types (quote ((undo discard-info))))
+ )
+
+
 ;------------------------------------------------------------------------------
 ; Unix-mode
 ;------------------------------------------------------------------------------
