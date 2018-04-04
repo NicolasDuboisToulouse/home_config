@@ -1,0 +1,11 @@
+https://dl.bintray.com/oneclick/rubyinstaller/rubyinstaller-2.3.3-x64.exe
+
+# funcking proxy airbus & SSL check
+$ echo “http_proxy: http://44.33.102.73:3128” > ~/.gemrc
+$ gem sources --add http://rubygems.org
+$ gem sources --remove https://rubygems.org
+$ gem sources --list
+
+# Installation
+$ gem install asciidoctor
+$ gem install --pre asciidoctor-pdf
