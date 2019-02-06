@@ -3,7 +3,8 @@ param (
     [string]$file = '*',
     [string]$action_name = 'none',
     [string]$action_label = 'You did something bad...',
-    [string]$action_cmd = 'nothing'
+    [string]$action_cmd = 'nothing',
+    [string]$action_icon = $null
  )
 
 
@@ -33,7 +34,7 @@ else {
                         $target_class = $default_value
                 }
         }
-        # Set the class (migth be already set...
+        # Set the class (migth be already set...)
         $file_key = $reg_current_user.CreateSubKey('Software\Classes\\' + $file)
         $file_key.setValue('', $target_class, [Microsoft.Win32.RegistryValueKind]::String);
 }
@@ -55,6 +56,9 @@ function create_command
         $shell_key = $class_key.CreateSubKey('shell')
         $action_key = $shell_key.CreateSubKey($action_name)
         $action_key.setValue('', $action_label, [Microsoft.Win32.RegistryValueKind]::ExpandString);
+        if ($action_icon) {
+                $action_key.setValue('Icon', $action_icon, [Microsoft.Win32.RegistryValueKind]::String);
+        }
         $command_key = $action_key.CreateSubKey('command')
         $command_key.setValue('', $action_cmd + ' ' + $parameter, [Microsoft.Win32.RegistryValueKind]::ExpandString);        
 }
