@@ -5,7 +5,5 @@ Checkout in <home>/.config/emacs
 # ln -s ~/.config/emacs/dot_emacs ~/.emacs
 
 * Windows: 
- Use mklink as admin
-
-** Windows context menu
-   Edit emacs_context_menu.reg to setup emacs path
+ Use mklink as admin (voir win32_link_dotEmacs.bat)
+ 
