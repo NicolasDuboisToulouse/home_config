@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.adoc]
+@="adoc_auto_file"
+
+[HKEY_CLASSES_ROOT\adoc_auto_file\DefaultIcon]
+@="%HOME%\\.config\\icons\\asciidoc.ico"
+

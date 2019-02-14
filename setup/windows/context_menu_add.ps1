@@ -4,7 +4,8 @@ param (
     [string]$action_name = 'none',
     [string]$action_label = 'You did something bad...',
     [string]$action_cmd = 'nothing',
-    [string]$action_icon = $null
+    [string]$action_icon = $null,
+    [switch]$default = $null
  )
 
 
@@ -54,6 +55,9 @@ function create_command
 
         $class_key = $reg_current_user.CreateSubKey($class_path)
         $shell_key = $class_key.CreateSubKey('shell')
+        if ($default) {
+                $shell_key.setValue('', $action_name, [Microsoft.Win32.RegistryValueKind]::String);
+        }
         $action_key = $shell_key.CreateSubKey($action_name)
         $action_key.setValue('', $action_label, [Microsoft.Win32.RegistryValueKind]::ExpandString);
         if ($action_icon) {
