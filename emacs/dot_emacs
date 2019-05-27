@@ -262,3 +262,13 @@ prompt the user for a coding system."
                     (set-variable 'py-indent-offset 4)
                     (set-variable 'py-smart-indentation nil)
                     (set-variable 'indent-tabs-mode nil) )))
+
+
+; cmake
+(autoload 'cmake-mode "cmake-mode" "Major mode for CMake" t)
+(setq auto-mode-alist
+      (append
+       (list
+	'("\\.cmake" . cmake-mode)
+	)
+       auto-mode-alist))
