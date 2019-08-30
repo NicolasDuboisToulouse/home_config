@@ -1,0 +1,7 @@
+Activer powershell:
+* executez powershell en tant qu'admin
+* Executez: set-executionpolicy remotesigned
+
+Créer une entrée <conext menu>/<new>:
+[HKEY_CLASSES_ROOT\.txt\ShellNew]
+"NullFile"=""
