@@ -22,14 +22,19 @@
 ; No automatic new-line
 (setq next-line-add-newlines nil)
 
-; French...
-(setq ispell-dictionary "francais")
-
 
 ; Ignore warning on large modifications witch can not be stored for undo
 (custom-set-variables
  '(warning-suppress-types (quote ((undo discard-info))))
  )
+
+
+;------------------------------------------------------------------------------
+; Aspell
+;------------------------------------------------------------------------------
+(add-to-list 'exec-path "C:/local/Aspell/bin/")
+(setq ispell-program-name "aspell")
+(setq ispell-dictionary "american")
 
 
 ;------------------------------------------------------------------------------
@@ -269,6 +274,17 @@ prompt the user for a coding system."
 (setq auto-mode-alist
       (append
        (list
+	'("CMakeLists.txt" . cmake-mode)
 	'("\\.cmake" . cmake-mode)
+	)
+       auto-mode-alist))
+
+
+; ninja
+(autoload 'ninja-mode "ninja-mode" "Major mode for Ninja" t)
+(setq auto-mode-alist
+      (append
+       (list
+	'("\\.ninja" . ninja-mode)
 	)
        auto-mode-alist))
