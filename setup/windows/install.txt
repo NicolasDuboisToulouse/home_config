@@ -16,6 +16,5 @@ Si besoin d'ajouter une entrée <conext menu>/<new>, exemple pour fichier texte:
 
 ----
 TODO:
-* path de ruby dans .config/bin/asciidoctor*bat
 * path de aspell dans .config/emacs/dot_emacs
 
