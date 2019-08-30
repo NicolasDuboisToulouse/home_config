@@ -1,7 +1,21 @@
-Activer powershell:
+1. Définir une variable HOME avec pour valeur %USERPROFILE%
+
+2.Activer powershell:
 * executez powershell en tant qu'admin
 * Executez: set-executionpolicy remotesigned
 
-Créer une entrée <conext menu>/<new>:
+3.Mettre à jour le fichier config.bat
+
+4.Executer les .bat voulus
+
+-----
+
+Si besoin d'ajouter une entrée <conext menu>/<new>, exemple pour fichier texte:
 [HKEY_CLASSES_ROOT\.txt\ShellNew]
 "NullFile"=""
+
+----
+TODO:
+* path de ruby dans .config/bin/asciidoctor*bat
+* path de aspell dans .config/emacs/dot_emacs
+
