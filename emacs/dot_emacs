@@ -171,6 +171,14 @@ prompt the user for a coding system."
   (table-capture (region-beginning) (region-end) ";")
   )
 
+;;------------------------------------------------------------------------------
+;; Sort no-case function
+;;------------------------------------------------------------------------------
+(defun sort-lines-nocase ()
+  (interactive)
+  (let ((sort-fold-case t))
+    (call-interactively 'sort-lines)))
+
 
 ;;------------------------------------------------------------------------------
 ;; Extra packages
