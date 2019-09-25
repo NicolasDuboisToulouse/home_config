@@ -43,9 +43,22 @@
 ;;------------------------------------------------------------------------------
 (setq snoopy-home (getenv "HOME"))
 
+(if (string= snoopy-home "/home/to74866")
+    (progn
+      (message "Configuring emacs for work on Linux.")
+      (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
+
+      (setq url-proxy-services
+            '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+              ("http" . "simlx09:3128")
+              ("https" . "simlx09:3128")))
+      (setq network-security-level "low")
+      )
+  )
+
 (if (string= snoopy-home "C:\\Users\\to74866")
     (progn
-      (message "Configuring emacs for work.")
+      (message "Configuring emacs for work on Windows.")
       (add-to-list 'exec-path "C:/local/Aspell/bin/")
       (add-to-list 'exec-path "C:/Program Files/Git/bin")
 
