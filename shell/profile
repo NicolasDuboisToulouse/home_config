@@ -2,7 +2,7 @@
 # Check OS
 # ---------------------------
 if [ -z $OS ]; then
-    OS=Linux
+    export OS=Linux
 fi
 
 # ---------------------------

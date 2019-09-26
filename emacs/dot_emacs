@@ -322,3 +322,9 @@ prompt the user for a coding system."
              :mode "\\.ninja$"
              )
 
+;; shell script mode
+(setq auto-mode-alist
+      (append
+       (list (cons "bash" 'shell-script-mode))
+       (list (cons "profile$" 'shell-script-mode))
+       auto-mode-alist))

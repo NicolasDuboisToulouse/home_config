@@ -15,10 +15,10 @@ alias cp='cp -i'
 
 
 # xterm
-if [ $OS = "Windows_NT" ]; then
+if [ "x$OS" = "xWindows_NT" ]; then
     alias xterm="/c/Program\ Files/Git/git-bash.exe"
 else
-    alias xterm='xterm -sb -sl 1000 -bg black -fg white'
+    alias xterm='xterm -sb -sl 1000 -bg black -fg white -e /bin/bash'
 fi
 
 
