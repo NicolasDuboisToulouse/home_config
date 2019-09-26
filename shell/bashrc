@@ -1,8 +1,16 @@
+# -----------------------------------------------------------------------------
+# Console
+# -----------------------------------------------------------------------------
 # Emacs mode
 set -o emacs
 
 # Give rights to group
 umask 002
+
+
+# -----------------------------------------------------------------------------
+# Alias
+# -----------------------------------------------------------------------------
 
 # ls
 alias ls='ls --color=auto'
@@ -22,9 +30,9 @@ else
 fi
 
 
-# ---------------------------
+# -----------------------------------------------------------------------------
 # Prompt
-# ---------------------------
+# -----------------------------------------------------------------------------
 __snoopy_set_prompt_command()
 {
     local color_user="\033[1;35m"
@@ -51,3 +59,47 @@ __snoopy_set_prompt_command()
 }
 
 export PROMPT_COMMAND=__snoopy_set_prompt_command
+
+
+# -----------------------------------------------------------------------------
+# Environement
+# -----------------------------------------------------------------------------
+
+# if environement is set, we needn't to set it again
+# (variables are preserved for new shell wich is not the case for alias and functions)
+[ ! -z $SNOOPY_ENV_IS_SET ] && return
+export SNOOPY_ENV_IS_SET=1
+
+#OS var set on Windows but not on Linux
+[ -z $OS ] && export OS=Linux
+
+
+# Cots configuration (depend on location)
+if [ $HOME = "/c/Users/to74866" ]; then
+    PERL_HOME=/c/local/strawberry/perl
+    PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
+fi
+
+if [ $HOME = "/home/to74866" ]; then
+    . /home/ioland/REF/COTS/SCMSTACK/V1/scm_env
+
+    export JAVA_HOME=/home/aspic_de/COTS/JDK/jdk1.8.0_65-64b
+    PATH=$JAVA_HOME/bin:$PATH
+
+    # export MVN_HOME=/home/aspic_de/COTS/MAVEN/apache-maven-3.3.9
+    # PATH=$MVN_HOME/bin:$PATH
+
+    PATH=${HOME}/PRODUCTS/scripts:${PATH}
+fi
+
+export PATH
+
+# Ls colors (overwrite default color for directories and links)
+[ ! -e ~/.dircolors ] && (dircolors -p; echo; echo 'DIR 01;36'; echo 'LINK 01;33') > ~/.dircolors
+eval `dircolors ~/.dircolors`
+
+
+# set editor
+export EDITOR=nano
+export SVN_EDITOR=$EDITOR
+export GIT_EDITOR=$EDITOR
