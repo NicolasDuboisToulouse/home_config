@@ -14,7 +14,4 @@ Si besoin d'ajouter une entrée <conext menu>/<new>, exemple pour fichier texte:
 [HKEY_CLASSES_ROOT\.txt\ShellNew]
 "NullFile"=""
 
-----
-TODO:
-* path de aspell dans .config/emacs/dot_emacs
 

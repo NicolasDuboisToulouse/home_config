@@ -1,0 +1,53 @@
+# Emacs mode
+set -o emacs
+
+# Give rights to group
+umask 002
+
+# ls
+alias ls='ls --color=auto'
+alias ll="ls -l"
+
+# Prevent mistakes
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+
+
+# xterm
+if [ $OS = "Windows_NT" ]; then
+    alias xterm="/c/Program\ Files/Git/git-bash.exe"
+else
+    alias xterm='xterm -sb -sl 1000 -bg black -fg white'
+fi
+
+
+# ---------------------------
+# Prompt
+# ---------------------------
+__snoopy_set_prompt_command()
+{
+    local color_user="\033[1;35m"
+    local color_txt="\033[0;0m"
+    local color_host="\033[1;32m"
+    local color_path="\033[1;34m"
+    local color_git="\033[1;36m"
+    
+    local term_title="\[\e]2;\u@\h:\W\a\]"
+
+
+    # Look for __git_ps1 function
+    if ! type -t __git_ps1 > /dev/null; then
+        if [ -e  ~/.config/git/git-prompt.sh ]; then
+            source  ~/.config/git/git-prompt.sh
+        fi
+    fi
+
+    if type -t __git_ps1 > /dev/null; then
+        __git_ps1 "${term_title}${color_user}\u${color_txt}@${color_host}\h${color_txt}:${color_path}\w${color_git}" "${color_txt}\r\n$ "
+    else
+        export PS1="${term_title}${color_user}\u${color_txt}@${color_host}\h${color_txt}:${color_path}\w${color_txt}\r\n>"
+    fi
+}
+
+export PROMPT_COMMAND=__snoopy_set_prompt_command
