@@ -1,0 +1,1 @@
+Première chose à faire: Définir une variable HOME avec pour valeur %USERPROFILE%
