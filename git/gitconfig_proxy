@@ -1,0 +1,10 @@
+;
+; git proxy configuration
+;
+
+[http]
+    ; Proxy and its bad security
+    proxy = http://to74866@webproxy-fr.eu.airbus.corp:3128
+    sslVerify = false
+
+

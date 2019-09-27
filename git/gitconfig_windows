@@ -1,0 +1,25 @@
+;
+; git configuration for windows
+;
+
+[core]
+    ; ignore case on Windows
+    ignorecase = true
+    ; ignore filemode on Windows
+    filemode = false
+
+[credential]
+    ; Store passwords on Windows
+    helper = wincred
+
+    ; Windows dif/merge tool
+[merge]
+    tool = kdiff3
+[diff]
+    guitool = kdiff3
+[mergetool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+[difftool "kdiff3"]
+    path = C:/Program Files (x86)/KDiff3/kdiff3.exe
+
+

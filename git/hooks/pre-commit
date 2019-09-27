@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Get current repository URL
+repo_url=$(git config --get remote.origin.url)
+[ -z "$repo_url" ] && exit 0
+
+
+# Look for user/email associated to this repository
+unset target_user
+unset target_email
+
+if [[ $repo_url =~ "github.com/NicolasDuboisToulouse" ]]; then
+    target_user="Nicolas Dubois"
+    target_email="DuboisNicolasToulouse@users.noreply.github.com"
+fi
+if [[ $repo_url =~ "github.com/NicolasDuboisAirbus" ]]; then
+    target_user="Nicolas Dubois"
+    target_email="DuboisNicolasAirbus@users.noreply.github.com"
+fi
+if [[ $repo_url =~ "gheprivate.intra.corp" ]]; then
+    if [ -z "$EMAIL" ]; then
+        echo "Please set your EMAIL environement variable!"
+        exit 1
+    fi
+    target_user="Nicolas Dubois"
+    target_email=$EMAIL
+fi
+
+
+# Update local git configuration if needed
+config_change=0
+
+if [ ! -z "$target_user" ]; then
+    git_user=$(git config --get user.name)
+    if [ "x$git_user" != "x$target_user" ]; then
+        echo "Set user to '$target_user' for repository $repo_url."
+        git config user.name "$target_user"
+        config_change=1
+    fi
+fi
+
+if [ ! -z "$target_email" ]; then
+    git_email=$(git config --get user.email)
+    if [ "x$git_email" != "x$target_email" ]; then
+        echo "Set email to '$target_email' for repository $repo_url."
+        git config user.email "$target_email"
+        config_change=1
+    fi
+fi
+
+
+# Abort commit if configuration have changed (to take in account the modifications)
+if [ $config_change != 0 ]; then
+    echo "Git local configuration has been modified. Please commit again.";
+    exit 1
+fi
+
+exit 0
