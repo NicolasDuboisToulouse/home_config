@@ -4,7 +4,7 @@
 
 [http]
     ; Proxy and its bad security
-    proxy = http://to74866@webproxy-fr.eu.airbus.corp:3128
+    proxy = 44.33.102.73:3128
     sslVerify = false
 
 
