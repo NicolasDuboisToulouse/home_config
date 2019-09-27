@@ -4,7 +4,7 @@
 
 [core]
     ; case sensitive on Linux
-	ignorecase = false
+    ignorecase = false
     ; Use filemode on Linux
     filemode = true
 
