@@ -73,10 +73,14 @@ export SNOOPY_ENV_IS_SET=1
 #OS var set on Windows but not on Linux
 [ -z $OS ] && export OS=Linux
 
-
 # Cots configuration (depend on location)
 if [ $HOME = "/c/Users/to74866" ]; then
     PERL_HOME=/c/local/strawberry/perl
+    PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
+fi
+
+if [ $HOME = "/c/Users/snoopy" ]; then
+    PERL_HOME=/d/Softs/Install/strawberry/perl
     PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
 fi
 

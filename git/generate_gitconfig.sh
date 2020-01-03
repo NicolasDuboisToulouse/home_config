@@ -16,5 +16,6 @@ if [[ $HOME =~ "74866" ]]; then
     cat ~/.config/git/gitconfig_proxy     >> ~/.gitconfig
 fi
 
-
-    
+if [ "x$OS" = "xWindows_NT" ]; then
+    echo "Run git Extention to configure kdiff3 path."
+fi

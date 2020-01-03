@@ -12,6 +12,9 @@
 (column-number-mode t)
 (which-func-mode 1)
 
+;; Disable beep
+(setq ring-bell-function 'ignore)
+
 ;; Command completion
 (icomplete-mode)
 
@@ -21,6 +24,9 @@
 
 ;; No automatic new-line
 (setq next-line-add-newlines nil)
+
+;; Allow *case region
+(put 'upcase-region 'disabled nil)
 
 ;;Ctrl X Ctrl l: goto line
 (global-set-key [(ctrl x)(ctrl l)] 'goto-line)
@@ -48,7 +54,7 @@
 
 (if (string= snoopy-home "/home/to74866")
     (progn
-      (message "Configuring emacs for work on Linux.")
+      (message "Configuring emacs for work on Linux station 1.")
       (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
 
       (setq url-proxy-services
@@ -61,7 +67,7 @@
 
 (if (string= snoopy-home "C:\\Users\\to74866")
     (progn
-      (message "Configuring emacs for work on Windows.")
+      (message "Configuring emacs for work on Windows station 1.")
       (add-to-list 'exec-path "C:/local/Aspell/bin/")
       (add-to-list 'exec-path "C:/Program Files/Git/bin")
 
@@ -70,6 +76,14 @@
               ("http" . "simlx09:3128")
               ("https" . "simlx09:3128")))
       (setq network-security-level "low")
+      )
+  )
+
+(if (string= snoopy-home "C:\\Users\\snoopy")
+    (progn
+      (message "Configuring emacs for work on Windows station 2.")
+      (add-to-list 'exec-path "TODO")
+      (add-to-list 'exec-path "D:/Softs/Install/Git/bin")
       )
   )
 
