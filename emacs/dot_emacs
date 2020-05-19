@@ -226,12 +226,12 @@ prompt the user for a coding system."
 (setq use-package-always-ensure t)
 
 ;; check all packages are up-to-date
-(use-package auto-package-update
-             :config
-             (setq auto-package-update-delete-old-versions t)
-             (setq auto-package-update-hide-results t)
-             (auto-package-update-maybe)
-             )
+;; (use-package auto-package-update
+;;              :config
+;;              (setq auto-package-update-delete-old-versions t)
+;;              (setq auto-package-update-hide-results t)
+;;              (auto-package-update-maybe)
+;;              )
 
 
 
@@ -263,10 +263,10 @@ prompt the user for a coding system."
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;; git integration
-(use-package magit
-             :defer t
-             :bind (("C-x g" . magit-status))
-             )
+;; (use-package magit
+;;              :defer t
+;;              :bind (("C-x g" . magit-status))
+;;              )
 
 ;; nxml mode for XML files (built-in package)
 (fset 'xml-mode 'nxml-mode)
