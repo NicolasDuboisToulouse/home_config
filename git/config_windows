@@ -1,0 +1,3 @@
+[include]
+    path = ~/.config/git/inc_config_base.inc
+    path = ~/.config/git/inc_config_windows.inc
