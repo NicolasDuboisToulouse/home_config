@@ -40,7 +40,7 @@ __snoopy_set_prompt_command()
     local color_host="\033[1;32m"
     local color_path="\033[1;34m"
     local color_git="\033[1;36m"
-    
+
     local term_title="\[\e]2;\u@\h:\W\a\]"
 
 
@@ -74,26 +74,23 @@ export SNOOPY_ENV_IS_SET=1
 [ -z $OS ] && export OS=Linux
 
 # Cots configuration (depend on location)
-if [ $HOME = "/c/Users/to74866" ]; then
+if [ -e /c/local/strawberry/perl ]; then
     PERL_HOME=/c/local/strawberry/perl
     PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
 fi
 
-if [ $HOME = "/c/Users/snoopy" ]; then
+if [ -e /d/Softs/Install/strawberry/perl ]; then
     PERL_HOME=/d/Softs/Install/strawberry/perl
     PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
 fi
 
-if [ $HOME = "/home/to74866" ]; then
+if [ -e /home/ioland/REF/COTS/SCMSTACK/V1/scm_env ]; then
     . /home/ioland/REF/COTS/SCMSTACK/V1/scm_env
+fi
 
+if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
     export JAVA_HOME=/home/aspic_de/COTS/JDK/jdk1.8.0_65-64b
     PATH=$JAVA_HOME/bin:$PATH
-
-    # export MVN_HOME=/home/aspic_de/COTS/MAVEN/apache-maven-3.3.9
-    # PATH=$MVN_HOME/bin:$PATH
-
-    PATH=${HOME}/PRODUCTS/scripts:${PATH}
 fi
 
 export PATH
@@ -104,6 +101,24 @@ eval `dircolors ~/.dircolors`
 
 
 # set editor
-export EDITOR=nano
+export EDITOR="emacs -nw"
 export SVN_EDITOR=$EDITOR
 export GIT_EDITOR=$EDITOR
+
+# SSH that force bash and forward display from windows host (ssh -X or -Y not working)
+function wssh () {
+    host=$1
+    user=$(whoami | awk '{print tolower($0)}')
+    if [ -z $host ]; then
+        echo -n "Host: "
+        read host
+    fi
+
+    display=$DISPLAY
+
+    if [ $OS = "Windows_NT" ]; then
+        display=$(ipconfig | grep IPv4 | grep -v '192.168' | awk '{ print $16 }')":0"
+    fi
+
+    ssh $user@$host -t "export DISPLAY=$display; bash"
+}
