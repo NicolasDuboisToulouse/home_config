@@ -52,6 +52,10 @@
 ;; Disable backup files
 (setq make-backup-files nil)
 
+;;line size for auto-fill-mode
+(setq-default fill-column 80)
+
+
 ;;------------------------------------------------------------------------------
 ;; Options that depend on location
 ;;------------------------------------------------------------------------------
@@ -212,8 +216,8 @@ prompt the user for a coding system."
 ;; Auto download packages
 (require 'package)
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")))
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (setq package-check-signature nil)
@@ -329,7 +333,7 @@ prompt the user for a coding system."
 ;; groovy mode
 (use-package groovy-mode
              :mode "\\.groovy\\'"
-             :mode "enkinsfile"
+             :mode "jenkinsfile"
              )
 
 
@@ -365,3 +369,13 @@ prompt the user for a coding system."
        (list (cons "bash" 'shell-script-mode))
        (list (cons "profile$" 'shell-script-mode))
        auto-mode-alist))
+
+;; CSV
+(use-package csv-mode
+             :mode "\\.csv$"
+             :config
+             (custom-set-variables
+              '(csv-separators (quote (";")))
+              '(csv-invisibility-default nil)
+              )
+             )

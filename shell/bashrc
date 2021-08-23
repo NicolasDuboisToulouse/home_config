@@ -1,6 +1,9 @@
 # -----------------------------------------------------------------------------
 # Console
 # -----------------------------------------------------------------------------
+HISTCONTROL=ignoredups
+HISTSIZE=1000
+
 # Emacs mode
 set -o emacs
 
@@ -91,6 +94,27 @@ fi
 if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
     export JAVA_HOME=/home/aspic_de/COTS/JDK/jdk1.8.0_65-64b
     PATH=$JAVA_HOME/bin:$PATH
+fi
+
+if [ -d /home/ioland/REF/COTS/CMAKE/V3.14.2/BINARIES/Linux ]; then
+    export CMAKE_HOME=/home/ioland/REF/COTS/CMAKE/V3.14.2/BINARIES/Linux
+    PATH=$CMAKE_HOME/bin:$PATH
+fi
+
+# Local perl libraries
+if [ -e ~/perl5/bin ]; then
+    PERL_HOME=~/perl5
+    export PERL5LIB=${PERL_HOME}/lib/perl5
+    export PERL_LOCAL_LIB_ROOT=${PERL_HOME}
+    export PERL_MB_OPT="--install_base ${PERL_HOME}"
+    export PERL_MM_OPT=INSTALL_BASE=${PERL_HOME}
+    PATH=${PERL_HOME}/bin:$PATH
+fi
+
+if [ -e /usr/lib/libtiff.so.5 ]; then
+    PATH=/home/to41974/tools/emacs/emacs-26.1/bin:$PATH
+else
+    PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
 fi
 
 export PATH
