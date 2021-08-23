@@ -61,39 +61,25 @@
 ;;------------------------------------------------------------------------------
 (setq snoopy-home (getenv "HOME"))
 
-(if (string= snoopy-home "/home/to74866")
-    (progn
-      (message "Configuring emacs for work on Linux station 1.")
-      (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
+(let ((local-settings "~/.emacs_local.el"))
+ (when (file-exists-p local-settings)
+   (load-file local-settings))
+ )
 
-      (setq url-proxy-services
-            '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-              ("http" . "simlx09:3128")
-              ("https" . "simlx09:3128")))
-      (setq network-security-level "low")
-      )
+;; Lookup for GIT
+(when (file-exists-p "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
+  (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
+  )
+(when (file-exists-p "C:/Program Files/Git/bin")
+  (add-to-list 'exec-path "C:/Program Files/Git/bin")
+  )
+(when (file-exists-p "D:/Softs/Install/Git/bin")
+  (add-to-list 'exec-path "D:/Softs/Install/Git/bin")
   )
 
-(if (string= snoopy-home "C:\\Users\\to74866")
-    (progn
-      (message "Configuring emacs for work on Windows station 1.")
-      (add-to-list 'exec-path "C:/local/Aspell/bin/")
-      (add-to-list 'exec-path "C:/Program Files/Git/bin")
-
-      (setq url-proxy-services
-            '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-              ("http" . "simlx09:3128")
-              ("https" . "simlx09:3128")))
-      (setq network-security-level "low")
-      )
-  )
-
-(if (string= snoopy-home "C:\\Users\\snoopy")
-    (progn
-      (message "Configuring emacs for work on Windows station 2.")
-      (add-to-list 'exec-path "TODO")
-      (add-to-list 'exec-path "D:/Softs/Install/Git/bin")
-      )
+; Lookup for aspell
+(when (file-exists-p "C:/local/Aspell/bin")
+  (add-to-list 'exec-path "C:/local/Aspell/bin")
   )
 
 
