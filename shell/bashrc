@@ -100,11 +100,6 @@ export PATH
 eval `dircolors ~/.dircolors`
 
 
-# set editor
-export EDITOR="emacs -nw"
-export SVN_EDITOR=$EDITOR
-export GIT_EDITOR=$EDITOR
-
 # SSH that force bash and forward display from windows host (ssh -X or -Y not working)
 function wssh () {
     host=$1
