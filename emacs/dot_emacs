@@ -49,6 +49,9 @@
 ;; Workaround for Ctrl-c under windows console
 (global-set-key [24 pause] (quote save-buffers-kill-terminal))
 
+;; Disable backup files
+(setq make-backup-files nil)
+
 ;;------------------------------------------------------------------------------
 ;; Options that depend on location
 ;;------------------------------------------------------------------------------
