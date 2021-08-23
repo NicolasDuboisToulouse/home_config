@@ -1,3 +1,4 @@
 [include]
     path = ~/.config/git/inc_config_base.inc
     path = ~/.config/git/inc_config_linux.inc
+    path = ~/.gitconfig_local.inc

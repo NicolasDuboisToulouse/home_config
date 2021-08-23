@@ -8,4 +8,5 @@
     ; Use filemode on Linux
     filemode = true
 
-
+    ; Use emacs in console
+    editor = emacs -nw

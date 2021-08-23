@@ -34,3 +34,6 @@
     ; hooks
     hooksPath = ~/.config/git/hooks
 
+[alias]
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit
+    show-files = diff-tree --no-commit-id --name-only -r
