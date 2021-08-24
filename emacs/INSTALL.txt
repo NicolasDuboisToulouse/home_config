@@ -1,9 +1,11 @@
-* install
 Checkout in <home>/.config/emacs
 
-* Linux: 
-# ln -s ~/.config/emacs/dot_emacs ~/.emacs
+* Create Symb link
+Linux: ln -s ~/.config/emacs/dot_emacs ~/.emacs
+Windows: Use mklink as admin (see setup/ folder)
 
-* Windows: 
- Use mklink as admin (voir win32_link_dotEmacs.bat)
- 
+* Local config (Proxy, elpa, ...)
+COPY dot_emacs_local.el to ~/.emacs_local.el and ADAPT
+
+* local elpa (host without net)
+See local_elpa/README.txt
