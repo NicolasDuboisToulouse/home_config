@@ -367,3 +367,6 @@ prompt the user for a coding system."
               '(csv-invisibility-default nil)
               )
              )
+; PHP
+(use-package php-mode
+             :mode "\\.php$")
