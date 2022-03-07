@@ -145,7 +145,7 @@ function wssh () {
     display=$DISPLAY
 
     if [ $OS = "Windows_NT" ]; then
-        display=$(ipconfig | grep IPv4 | grep -v '192.168' | awk '{ print $16 }')":0"
+        display=$(ipconfig | grep IPv4 | grep -v '192.168' | head -n 1 | awk '{ print $16 }')":0"
     fi
 
     ssh $user@$host -t "export DISPLAY=$display; bash"

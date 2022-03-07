@@ -10,6 +10,8 @@
     ; Crlf handling
     autocrlf = input
     safecrlf = false
+    ;nicer diff
+    pager=less -r
 
     ; Run emacs in a virtual tty
     editor = winpty emacs -nw
