@@ -96,8 +96,8 @@ if [ -e /d/Softs/Install/strawberry/perl ]; then
     PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
 fi
 
-if [ -e /home/ioland/REF/COTS/SCMSTACK/V1/scm_env ]; then
-    . /home/ioland/REF/COTS/SCMSTACK/V1/scm_env
+if [ -e /home/ioland/REF/COTS/GIT/V2.22.1/BINARIES/Linux/bin ]; then
+    PATH=/home/ioland/REF/COTS/GIT/V2.22.1/BINARIES/Linux/bin:$PATH
 fi
 
 if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
@@ -120,10 +120,14 @@ if [ -e ~/perl5/bin ]; then
     PATH=${PERL_HOME}/bin:$PATH
 fi
 
-if [ -e /usr/lib/libtiff.so.5 ]; then
-    PATH=/home/to41974/tools/emacs/emacs-26.1/bin:$PATH
-else
-    PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
+if [ -e /etc/redhat-release ]; then
+    if grep '5\.' /etc/redhat-release >/dev/null; then
+        PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
+    fi
+    if grep '7\.' /etc/redhat-release >/dev/null; then
+        . /home/to41974/tools/emacs/emacs_env
+    fi
+    # else use system version
 fi
 
 export PATH
