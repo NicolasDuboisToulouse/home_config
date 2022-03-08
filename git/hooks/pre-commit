@@ -18,8 +18,11 @@ if [[ $repo_url =~ "github.com/NicolasDuboisAirbus" ]]; then
     target_email="DuboisNicolasAirbus@users.noreply.github.com"
 fi
 if [[ $repo_url =~ "gheprivate.intra.corp" ]]; then
+    if [ -e ~/.email ]; then
+        EMAIL=$(head ~/.email)
+    fi
     if [ -z "$EMAIL" ]; then
-        echo "Please set your EMAIL environement variable!"
+        echo "$0: Please set your EMAIL environement variable or create a ~/.email file !"
         exit 1
     fi
     target_user="Nicolas Dubois"
