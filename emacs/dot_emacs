@@ -294,11 +294,11 @@ prompt the user for a coding system."
        auto-mode-alist))
 
 
-;; javascript mode
-(use-package js2-mode
-             :mode "\\.js$"
+;; javascript mode with jsx support
+(use-package rjsx-mode
+             :mode "\\.jsx?$"
              )
-
+(setq sgml-basic-offset 2 js-indent-level 2)
 
 ;; yaml mode
 (use-package yaml-mode
