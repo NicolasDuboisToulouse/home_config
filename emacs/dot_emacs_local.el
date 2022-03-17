@@ -1,10 +1,10 @@
 ; May be used with something like CNTLM
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|10.*\\)")
-        ("http" . "localhost:3128")
-        ("https" . "localhost:3128")))
+;; (setq url-proxy-services
+;;       '(("no_proxy" . "^\\(localhost\\|10.*\\)")
+;;         ("http" . "localhost:3128")
+;;         ("https" . "localhost:3128")))
 
-(setq network-security-level "low")
+;; (setq network-security-level "low")
 
 ;; This not seems to works ...
 ; (setq url-http-proxy-basic-auth-storage
@@ -14,5 +14,5 @@
 
 
 ;; Define a local elpa package archives
-;(setq package-archives '(("myelpa" . "~/.config/emacs/local_elpa/archives")))
-;(setq local-elpa-packages t)
+(setq package-archives '(("myelpa" . "~/.config/emacs/local_elpa/archives")))
+(setq local-elpa-packages t)
