@@ -96,8 +96,8 @@ if [ -e /d/Softs/Install/strawberry/perl ]; then
     PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
 fi
 
-if [ -e /home/ioland/REF/COTS/GIT/V2.22.1/BINARIES/Linux/bin ]; then
-    PATH=/home/ioland/REF/COTS/GIT/V2.22.1/BINARIES/Linux/bin:$PATH
+if [ -e /home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin/git ]; then
+    alias git=/home/ioland/REF/COTS/GIT/V2.22.1/BINARIES/Linux/bin/git
 fi
 
 if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
