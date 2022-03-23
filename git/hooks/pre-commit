@@ -12,12 +12,12 @@ unset target_email
 if [[ $repo_url =~ "github.com/NicolasDuboisToulouse" ]]; then
     target_user="Nicolas Dubois"
     target_email="DuboisNicolasToulouse@users.noreply.github.com"
-fi
-if [[ $repo_url =~ "github.com/NicolasDuboisAirbus" ]]; then
+
+elif [[ $repo_url =~ "github.com/NicolasDuboisAirbus" ]]; then
     target_user="Nicolas Dubois"
     target_email="DuboisNicolasAirbus@users.noreply.github.com"
-fi
-if [[ $repo_url =~ "gheprivate.intra.corp" ]]; then
+
+else
     if [ -e ~/.email ]; then
         EMAIL=$(head ~/.email)
     fi
