@@ -105,10 +105,16 @@ if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
     PATH=$JAVA_HOME/bin:$PATH
 fi
 
-if [ -d /home/ioland/REF/COTS/CMAKE/V3.14.2/BINARIES/Linux ]; then
-    export CMAKE_HOME=/home/ioland/REF/COTS/CMAKE/V3.14.2/BINARIES/Linux
+if [ -d /home/CrossTools/Cots/CMAKE/V3.22.0/BINARIES/Linux64/bin ]; then
+    export CMAKE_HOME=/home/CrossTools/Cots/CMAKE/V3.22.0/BINARIES/Linux64
     PATH=$CMAKE_HOME/bin:$PATH
 fi
+
+if [ -d /home/ioland/REF/COTS/NINJA/V1.8.2/BINARIES/Linux ]; then
+    NINJA_BIN=/home/ioland/REF/COTS/NINJA/V1.8.2/BINARIES/Linux
+    PATH=$NINJA_BIN:$PATH
+fi
+
 
 # Local perl libraries
 if [ -e ~/perl5/bin ]; then
