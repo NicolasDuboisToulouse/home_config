@@ -101,12 +101,12 @@
 (defun up-slightly () (interactive) (scroll-up 5))
 (defun down-slightly () (interactive) (scroll-down 5))
 (global-set-key [mouse-4] 'down-slightly)
-(global-set-key [mouse-5] 'up-slightly) 
+(global-set-key [mouse-5] 'up-slightly)
 ;;Shift-Whell : 1 ligne
 (defun up-one () (interactive) (scroll-up 1))
 (defun down-one () (interactive) (scroll-down 1))
 (global-set-key [S-mouse-4] 'down-one)
-(global-set-key [S-mouse-5] 'up-one) 
+(global-set-key [S-mouse-5] 'up-one)
 ;;Ctrl-Whell : page
 (defun up-a-lot() (interactive)(scroll-up))
 (defun down-a-lot () (interactive) (scroll-down))
@@ -132,13 +132,14 @@
 (global-set-key [(ctrl shift left)] 'backward-sexp)
 
 ;; Never use tab but spaces
-(setq-default indent-tabs-mode nil) 
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
 ;; Special cases for C source
 (c-set-offset 'substatement-open '0)
 (c-set-offset 'brace-list-open '0)
 (c-set-offset 'statement-case-open '0)
+(c-set-offset 'inextern-lang 0)
 (setq c-default-style "linux" c-basic-offset 2)
 
 ;;------------------------------------------------------------------------------
@@ -242,7 +243,7 @@ prompt the user for a coding system."
 (use-package flyspell
              :defer t
              :init
-             (add-hook 'flyspell-mode-hook 'flyspell-buffer)             
+             (add-hook 'flyspell-mode-hook 'flyspell-buffer)
              )
 
 
@@ -252,8 +253,9 @@ prompt the user for a coding system."
              (setq ido-enable-flex-matching t)
              (setq ido-everywhere t)
              (ido-mode t)
+             :bind ("C-x C-b" . ido-switch-buffer)
              )
-             
+
 
 ;; Better buffer names (built-in package)
 (require 'uniquify)
@@ -285,8 +287,8 @@ prompt the user for a coding system."
 
 ;; bat mode (not available throw melpa, installed manually)
 (autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
-(setq auto-mode-alist 
-      (append 
+(setq auto-mode-alist
+      (append
        (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
        ;; For DOS init files
        (list (cons "CONFIG\\."   'bat-mode))
