@@ -252,6 +252,7 @@ prompt the user for a coding system."
              :config
              (setq ido-enable-flex-matching t)
              (setq ido-everywhere t)
+             :init
              (ido-mode t)
              :bind ("C-x C-b" . ido-switch-buffer)
              )
