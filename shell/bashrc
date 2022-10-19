@@ -32,9 +32,6 @@ else
     alias xterm='xterm -sb -sl 1000 -bg black -fg white -e /bin/bash'
 fi
 
-# Try gmake if make dont't exists
-which make > /dev/null 2>&1 || alias make=gmake
-
 # UTF-8
 if [ "x$OS" = "xWindows_NT" ]; then
     chcp.com 65001 >/dev/null
@@ -86,15 +83,7 @@ export SNOOPY_ENV_IS_SET=1
 [ -z $OS ] && export OS=Linux
 
 # Cots configuration (depend on location)
-if [ -e /c/local/strawberry/perl ]; then
-    PERL_HOME=/c/local/strawberry/perl
-    PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
-fi
-
-if [ -e /d/Softs/Install/strawberry/perl ]; then
-    PERL_HOME=/d/Softs/Install/strawberry/perl
-    PATH=${PERL_HOME}/bin:${PERL_HOME}/site/bin:$PATH
-fi
+[ -e ~/.local_cots ] && source ~/.local_cots
 
 if [ -e /home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin/git ]; then
     export PATH=/home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin:$PATH
