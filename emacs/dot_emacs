@@ -1,41 +1,86 @@
+;; (setq debug-on-error t)
+
 ;;------------------------------------------------------------------------------
-;; Global
+;; Package configuration
+;;------------------------------------------------------------------------------
+;; local configuration
+(let ((local-settings "~/.emacs_local.el"))
+  (when (file-exists-p local-settings)
+    (load-file local-settings))
+  )
+
+;; Personnal script and non-melpa packages
+(setq load-path (nconc '("~/.config/emacs/lisp") load-path))
+
+;; Where to find extra packages
+;; (local-elpa-packages may be defined by .emacs_local.el to disable this)
+(require 'package)
+(unless (boundp 'local-elpa-packages)
+  (setq package-archives
+        '(("gnu" . "https://elpa.gnu.org/packages/")
+          ("melpa" . "https://melpa.org/packages/")))
+  )
+(package-initialize)
+
+                                        ; For ugly environment
+                                        ; (setq package-check-signature nil)
+
+;; Bootstrap use-package (emacs < 19)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-when-compile (require 'use-package))
+
+;; Auto-install missing packages
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
+;;check all packages are up-to-date
+(defun my/update-packages ()
+  (interactive)
+  (use-package auto-package-update
+    :config
+    (setq auto-package-update-delete-old-versions t)
+    (setq auto-package-update-hide-results t)
+    (auto-package-update-maybe)
+    )
+  )
+
+;;------------------------------------------------------------------------------
+;; Look & Theme
 ;;------------------------------------------------------------------------------
 ;; Hide start-up message
 (setq inhibit-startup-message t)
 
-;; Windows title
+                                        ; title
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
 
 ;; Bottom bar
 (line-number-mode t)
 (column-number-mode t)
-(which-func-mode 1)
+(which-function-mode 1)
 
 ;; Disable beep
 (setq ring-bell-function 'ignore)
 
-;; Command completion
-(icomplete-mode)
+;; Theme
+                                        ;(set-default-font "7*14")
+(set-foreground-color "gray")
+(set-background-color "black")
+(set-cursor-color "darkslateblue")
+;;(set-face-background 'modeline "darkslateblue")
+;;(set-face-foreground 'modeline "lemonchiffon")
 
+;; font-lock-mode that may be replaced by tree-sitter when supported
+(global-font-lock-mode 'on)
+
+
+;;------------------------------------------------------------------------------
+;; Editor behavior
+;;------------------------------------------------------------------------------
 ;; Text mode by default
 (setq initial-major-mode 'text-mode)
 (setq default-major-mode 'text-mode)
-
-;; No automatic new-line
-(setq next-line-add-newlines nil)
-
-;; Allow *case region
-(put 'upcase-region 'disabled nil)
-
-;;Ctrl X Ctrl l: goto line
-(global-set-key [(ctrl x)(ctrl l)] 'goto-line)
-
-;; Prevent Custom to write to .emacs
-(setq custom-file "~/.emacs.d/custom.el")
-
-;; Ignore warning on large modifications witch can not be stored for undo
-(setq font-lock-maximum-size 1256000)
 
 ;; Unix-mode
 (prefer-coding-system 'utf-8-unix)
@@ -43,11 +88,12 @@
 (setq coding-system-for-write 'utf-8-unix)
 (defalias 'dos2unix 'delete-trailing-whitespace)
 
-;; allow downcase-region command
-(put 'downcase-region 'disabled nil)
+;; Never use tab but spaces
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
-;; Workaround for Ctrl-c under windows console
-(global-set-key [24 pause] (quote save-buffers-kill-terminal))
+;; No automatic new-line
+(setq next-line-add-newlines nil)
 
 ;; Disable backup files
 (setq make-backup-files nil)
@@ -55,17 +101,75 @@
 ;;line size for auto-fill-mode
 (setq-default fill-column 80)
 
+;; Ignore warning on large modifications witch can not be stored for undo
+(setq font-lock-maximum-size 1256000)
+
+;; mouse Copy/paste
+(setq mouse-drag-copy-region t)
+(setq mouse-yank-at-point t)
+
+;; Display parenthesis
+(show-paren-mode t)
+
+;;Ctrl Shift + direction : moving by block
+(global-set-key [(ctrl shift right)] 'forward-sexp)
+(global-set-key [(ctrl shift left)] 'backward-sexp)
+
+;;------------------------------------------------------------------------------
+;; Commands behavior
+;;------------------------------------------------------------------------------
+;; Prevent Custom to write to .emacs
+(setq custom-file "~/.emacs.d/custom.el")
+
+;;Ctrl X Ctrl l: goto line
+(global-set-key [(ctrl x)(ctrl l)] 'goto-line)
+
+;; Workaround for Ctrl-c under windows console
+(global-set-key [24 pause] (quote save-buffers-kill-terminal))
+
+;; Allow *case region
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+
+;; Command completion
+(icomplete-mode)
+
+
+;;------------------------------------------------------------------------------
+;; Tools
+;;------------------------------------------------------------------------------
+;; Spell-ckecking
+(use-package ispell
+  :defer t
+  :config
+  (setq ispell-program-name "aspell")
+  (setq ispell-dictionary "american")
+  )
+(use-package flyspell
+  :defer t
+  :init
+  (add-hook 'flyspell-mode-hook 'flyspell-buffer)
+  )
+
+;;ido folder browsing
+(use-package ido
+  :config
+  (setq ido-enable-flex-matching t)
+  (setq ido-everywhere t)
+  :init
+  (ido-mode t)
+  :bind ("C-x C-b" . ido-switch-buffer)
+  )
+
+;; Better buffer names
+(use-package uniquify
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :config
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 ;;------------------------------------------------------------------------------
 ;; Options that depend on location
 ;;------------------------------------------------------------------------------
-(setq snoopy-home (getenv "HOME"))
-
-(let ((local-settings "~/.emacs_local.el"))
- (when (file-exists-p local-settings)
-   (load-file local-settings))
- )
-
 ;; Lookup for GIT
 (when (file-exists-p "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
   (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
@@ -77,75 +181,108 @@
   (add-to-list 'exec-path "D:/Softs/Install/Git/bin")
   )
 
-; Lookup for aspell
+                                        ; Lookup for aspell
 (when (file-exists-p "C:/local/Aspell/bin")
   (add-to-list 'exec-path "C:/local/Aspell/bin")
   )
 
 
 ;;------------------------------------------------------------------------------
-;; font/color
+;; Languages specific
 ;;------------------------------------------------------------------------------
-;;(set-default-font "7*14")
-(set-foreground-color "gray")
-(set-background-color "black")
-(set-cursor-color "darkslateblue")
-;;(set-face-background 'modeline "darkslateblue")
-;;(set-face-foreground 'modeline "lemonchiffon")
-
-
-;;------------------------------------------------------------------------------
-;; Mouse managment
-;;------------------------------------------------------------------------------
-;; Wheel : 5 lignes
-(defun up-slightly () (interactive) (scroll-up 5))
-(defun down-slightly () (interactive) (scroll-down 5))
-(global-set-key [mouse-4] 'down-slightly)
-(global-set-key [mouse-5] 'up-slightly)
-;;Shift-Whell : 1 ligne
-(defun up-one () (interactive) (scroll-up 1))
-(defun down-one () (interactive) (scroll-down 1))
-(global-set-key [S-mouse-4] 'down-one)
-(global-set-key [S-mouse-5] 'up-one)
-;;Ctrl-Whell : page
-(defun up-a-lot() (interactive)(scroll-up))
-(defun down-a-lot () (interactive) (scroll-down))
-(global-set-key [C-mouse-4] 'down-a-lot)
-(global-set-key [C-mouse-5] 'up-a-lot)
-
-;; Copy/paste
-(setq mouse-drag-copy-region t)
-(setq mouse-yank-at-point t)
-
-
-;;------------------------------------------------------------------------------
-;; Developement configuration
-;;------------------------------------------------------------------------------
-;; Colors...
-(global-font-lock-mode 'on)
-
-;; Display parenthesis
-(show-paren-mode t)
-
-;;Ctrl Shift + direction : moving by block
-(global-set-key [(ctrl shift right)] 'forward-sexp)
-(global-set-key [(ctrl shift left)] 'backward-sexp)
-
-;; Never use tab but spaces
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-;; Special cases for C source
+;; C/C++ mode
 (c-set-offset 'substatement-open '0)
 (c-set-offset 'brace-list-open '0)
 (c-set-offset 'statement-case-open '0)
 (c-set-offset 'inextern-lang 0)
 (setq c-default-style "linux" c-basic-offset 2)
 
+;; XML mode
+(use-package nxml-mode
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "\\.xml"
+  :mode "\\.xsd"
+  :mode "\\.html"
+  :mode "\\.htm"
+  :mode "\\.xhtml"
+  :config
+  (setq nxml-child-indent 2)
+  (setq nxml-auto-insert-xml-declaration-flag t)
+  (setq nxml-slash-auto-complete-flag t))
+
+
+;; yaml mode
+(use-package yaml-mode
+  :mode (".yaml$")
+  :hook
+  (yaml-mode . yaml-mode-outline-hook)
+  :init
+  (defun yaml-outline-level ()
+	"Return the outline level based on the indentation, hardcoded at 2 spaces."
+	(s-count-matches "[ ]\\{2\\}" (match-string 0)))
+  (defun yaml-mode-outline-hook ()
+	(outline-minor-mode)
+	(setq outline-regexp "^\\([ ]\\{2\\}\\)*\\([-] \\)?\\([\"][^\"]*[\"]\\|[a-zA-Z0-9_-]*\\): *\\([>|]\\|&[a-zA-Z0-9_-]*\\)?$")
+	(setq outline-level 'yaml-outline-level))
+  )
+
+(use-package shell-script-mode
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "bashrc"
+  :mode "profile"
+  )
+
+;; groovy mode
+(use-package groovy-mode
+  :mode "\\.groovy\\'"
+  :mode "jenkinsfile"
+  )
+
+
+;; asciidoc mode
+(use-package adoc-mode
+  :mode "\\.adoc\\'"
+  )
+
+;; markdown mode
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  )
+
+;; powershell mode
+(use-package powershell
+  :mode ("\\.ps1\\'" . powershell-mode)
+  )
+
+;; cmake mode
+(use-package cmake-mode
+  :mode "CMakeLists.txt"
+  :mode "\\.cmake$"
+  )
+
+;; ninja mode
+(use-package ninja-mode
+  :mode "\\.ninja$"
+  )
+
+;; CSV
+(use-package csv-mode
+  :mode "\\.csv$"
+  :config
+  (custom-set-variables
+   '(csv-separators (quote (";")))
+   '(csv-invisibility-default nil)
+   )
+  )
+;; PHP
+(use-package php-mode
+  :mode "\\.php$")
+
+;;------------------------------------------------------------------------------
+;; Useful interactive functions
 ;;------------------------------------------------------------------------------
 ;; Invalid char lookup
-;;------------------------------------------------------------------------------
-(defun find-next-unsafe-char (&optional coding-system)
+(defun my/find-next-unsafe-char (&optional coding-system)
   "Find the next character in the buffer that cannot be encoded by
 coding-system. If coding-system is unspecified, default to the coding
 system that would be used to save this buffer. With prefix argument,
@@ -176,200 +313,15 @@ prompt the user for a coding system."
     (and found (goto-char (1+ (car found))))
     found))
 
-;;------------------------------------------------------------------------------
 ;; Convert semi-colon separated region to a table
-;;------------------------------------------------------------------------------
-(defun icd-region ()
+(defun my/icd-region ()
   (interactive)
   (table-capture (region-beginning) (region-end) ";")
   )
 
-;;------------------------------------------------------------------------------
 ;; Sort no-case function
-;;------------------------------------------------------------------------------
-(defun sort-lines-nocase ()
+(defun my/sort-lines-nocase ()
   (interactive)
   (let ((sort-fold-case t))
     (call-interactively 'sort-lines)))
 
-
-;;------------------------------------------------------------------------------
-;; Extra packages
-;;------------------------------------------------------------------------------
-
-;; Personnal script and non-melpa packages
-(setq load-path (nconc '("~/.config/emacs/lisp") load-path))
-
-;; Auto download packages
-(require 'package)
-(unless (boundp 'local-elpa-packages)
-    (setq package-archives
-          '(("gnu" . "https://elpa.gnu.org/packages/")
-            ("melpa" . "https://melpa.org/packages/")))
-  )
-(package-initialize)
-
-(setq package-check-signature nil)
-
-;; Bootstrap use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
-
-;; Auto-install missing packages
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-
-;; check all packages are up-to-date
-;; (use-package auto-package-update
-;;              :config
-;;              (setq auto-package-update-delete-old-versions t)
-;;              (setq auto-package-update-hide-results t)
-;;              (auto-package-update-maybe)
-;;              )
-
-
-
-;; Spell-ckecking
-(use-package ispell
-             :defer t
-             :config
-             (setq ispell-program-name "aspell")
-             (setq ispell-dictionary "american")
-             )
-(use-package flyspell
-             :defer t
-             :init
-             (add-hook 'flyspell-mode-hook 'flyspell-buffer)
-             )
-
-
-;;ido folder browsing
-(use-package ido
-             :config
-             (setq ido-enable-flex-matching t)
-             (setq ido-everywhere t)
-             :init
-             (ido-mode t)
-             :bind ("C-x C-b" . ido-switch-buffer)
-             )
-
-
-;; Better buffer names (built-in package)
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
-;; git integration
-;; (use-package magit
-;;              :defer t
-;;              :bind (("C-x g" . magit-status))
-;;              )
-
-;; nxml mode for XML files (built-in package)
-(fset 'xml-mode 'nxml-mode)
-(autoload 'nxml-mode "nxml-mode" "XML Major Mode (nxml)" t)
-(setq auto-mode-alist
-      (append
-       (list
-        '("\\.xml" . nxml-mode)
-        '("\\.xsd" . nxml-mode)
-        '("\\.html" . nxml-mode)
-        '("\\.htm" . nxml-mode)
-        '("\\.xhtml" . nxml-mode)
-        )
-       auto-mode-alist))
-(setq nxml-child-indent 2
-      nxml-auto-insert-xml-declaration-flag t
-      nxml-slash-auto-complete-flag t)
-
-
-;; bat mode (not available throw melpa, installed manually)
-(autoload 'bat-mode "bat-mode" "DOS and WIndows BAT files" t)
-(setq auto-mode-alist
-      (append
-       (list (cons "\\.[bB][aA][tT]$" 'bat-mode))
-       ;; For DOS init files
-       (list (cons "CONFIG\\."   'bat-mode))
-       (list (cons "AUTOEXEC\\." 'bat-mode))
-       auto-mode-alist))
-
-
-;; javascript mode with jsx support
-(use-package rjsx-mode
-             :mode "\\.jsx?$"
-             )
-(setq sgml-basic-offset 2 js-indent-level 2)
-
-;; yaml mode
-(use-package yaml-mode
-  :mode (".yaml$")
-  :hook
-  (yaml-mode . yaml-mode-outline-hook)
-
-  :init
-  (defun yaml-outline-level ()
-    "Return the outline level based on the indentation, hardcoded at 2 spaces."
-    (s-count-matches "[ ]\\{2\\}" (match-string 0)))
-
-  (defun yaml-mode-outline-hook ()
-    (outline-minor-mode)
-    (setq outline-regexp "^\\([ ]\\{2\\}\\)*\\([-] \\)?\\([\"][^\"]*[\"]\\|[a-zA-Z0-9_-]*\\): *\\([>|]\\|&[a-zA-Z0-9_-]*\\)?$")
-    (setq outline-level 'yaml-outline-level))
-  )
-
-
-;; groovy mode
-(use-package groovy-mode
-             :mode "\\.groovy\\'"
-             :mode "jenkinsfile"
-             )
-
-
-;; asciidoc mode
-(use-package adoc-mode
-             :mode "\\.adoc\\'"
-             )
-
-;; markdown mode
-(use-package markdown-mode
-             :mode "\\.md\\'"
-             )
-
-(use-package powershell
-             :mode ("\\.ps1\\'" . powershell-mode)
-             )
-
-
-;; cmake mode
-(use-package cmake-mode
-             :mode "CMakeLists.txt"
-             :mode "\\.cmake$"
-             )
-
-;; ninja mode
-(use-package ninja-mode
-             :mode "\\.ninja$"
-             )
-
-;; shell script mode
-(setq auto-mode-alist
-      (append
-       (list (cons "bash" 'shell-script-mode))
-       (list (cons "profile$" 'shell-script-mode))
-       auto-mode-alist))
-
-;; CSV
-(use-package csv-mode
-             :mode "\\.csv$"
-             :config
-             (custom-set-variables
-              '(csv-separators (quote (";")))
-              '(csv-invisibility-default nil)
-              )
-             )
-; PHP
-(use-package php-mode
-             :mode "\\.php$")
