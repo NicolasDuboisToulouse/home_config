@@ -20,16 +20,16 @@
         '(("gnu" . "https://elpa.gnu.org/packages/")
           ("melpa" . "https://melpa.org/packages/")))
   )
-(package-initialize)
 
-                                        ; For ugly environment
-                                        ; (setq package-check-signature nil)
+;; For ugly environment
+;; (setq package-check-signature nil)
 
 ;; Bootstrap use-package (emacs < 19)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile (require 'use-package))
+;; (package-initialize)
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+;; (eval-when-compile (require 'use-package))
 
 ;; Auto-install missing packages
 (require 'use-package-ensure)
@@ -64,7 +64,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; Theme
-                                        ;(set-default-font "7*14")
+;;(set-default-font "7*14")
 (set-foreground-color "gray")
 (set-background-color "black")
 (set-cursor-color "darkslateblue")
@@ -166,6 +166,24 @@
   :ensure nil  ; workaround issue with use-package-ensure for build-in packages
   :config
   (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
+
+
+;;------------------------------------------------------------------------------
+;; eglot IDE
+;; activate with M-x eglot
+;; eglot is just the client. A server is needed. For node/typescript, install globally:
+;; npm i -g typescript-language-server
+;; npm i -g typescript
+;;------------------------------------------------------------------------------
+(use-package eglot)
+
+(use-package company
+  :after eglot
+  :hook (eglot-managed-mode . company-mode)
+)
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 ;;------------------------------------------------------------------------------
 ;; Options that depend on location
@@ -277,6 +295,16 @@
 ;; PHP
 (use-package php-mode
   :mode "\\.php$")
+
+
+;; Typescript & react TSX
+(use-package typescript-ts-mode
+  :mode "\\.ts$"
+  )
+(use-package tsx-ts-mode
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "\\.tsx$"
+  )
 
 ;;------------------------------------------------------------------------------
 ;; Useful interactive functions
