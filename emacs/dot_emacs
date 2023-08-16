@@ -231,7 +231,7 @@
 
 ;; yaml mode
 (use-package yaml-mode
-  :mode (".yaml$")
+  :mode (".yaml\\'")
   :hook
   (yaml-mode . yaml-mode-outline-hook)
   :init
@@ -275,17 +275,17 @@
 ;; cmake mode
 (use-package cmake-mode
   :mode "CMakeLists.txt"
-  :mode "\\.cmake$"
+  :mode "\\.cmake\\'"
   )
 
 ;; ninja mode
 (use-package ninja-mode
-  :mode "\\.ninja$"
+  :mode "\\.ninja\\'"
   )
 
 ;; CSV
 (use-package csv-mode
-  :mode "\\.csv$"
+  :mode "\\.csv\\'"
   :config
   (custom-set-variables
    '(csv-separators (quote (";")))
@@ -294,17 +294,29 @@
   )
 ;; PHP
 (use-package php-mode
-  :mode "\\.php$")
+  :mode "\\.php\\'")
 
 
 ;; Typescript & react TSX
-(use-package typescript-ts-mode
-  :mode "\\.ts$"
-  )
 (use-package tsx-ts-mode
   :ensure nil  ; workaround issue with use-package-ensure for build-in packages
-  :mode "\\.tsx$"
+  :mode "\\.ts\\'"
+  :mode "\\.tsx\\'"
   )
+
+;; JSON
+(use-package json-ts-mode
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "\\.json\\'"
+  )
+
+;; Docker
+(use-package dockerfile-ts-mode
+  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "/Dockerfile\\'"
+  )
+
+
 
 ;;------------------------------------------------------------------------------
 ;; Useful interactive functions
