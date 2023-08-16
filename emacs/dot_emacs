@@ -52,7 +52,7 @@
 ;; Hide start-up message
 (setq inhibit-startup-message t)
 
-                                        ; title
+;; title
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
 
 ;; Bottom bar
@@ -71,7 +71,7 @@
 ;;(set-face-background 'modeline "darkslateblue")
 ;;(set-face-foreground 'modeline "lemonchiffon")
 
-;; font-lock-mode that may be replaced by tree-sitter when supported
+;; font-lock-mode (that may be replaced by tree-sitter when supported)
 (global-font-lock-mode 'on)
 
 
@@ -88,7 +88,7 @@
 (setq coding-system-for-write 'utf-8-unix)
 (defalias 'dos2unix 'delete-trailing-whitespace)
 
-;; Never use tab but spaces
+;; Never use tab but spaces (may be overitted by modes)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
@@ -118,7 +118,7 @@
 ;;------------------------------------------------------------------------------
 ;; Commands behavior
 ;;------------------------------------------------------------------------------
-;; Prevent Custom to write to .emacs
+;; Prevent Custom to write to .emacs: write them to another file
 (setq custom-file "~/.emacs.d/custom.el")
 
 ;;Ctrl X Ctrl l: goto line
@@ -184,25 +184,6 @@
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
-
-;;------------------------------------------------------------------------------
-;; Options that depend on location
-;;------------------------------------------------------------------------------
-;; Lookup for GIT
-(when (file-exists-p "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
-  (add-to-list 'exec-path "/home/ioland/REF/COTS/SCMSTACK/V1/bin")
-  )
-(when (file-exists-p "C:/Program Files/Git/bin")
-  (add-to-list 'exec-path "C:/Program Files/Git/bin")
-  )
-(when (file-exists-p "D:/Softs/Install/Git/bin")
-  (add-to-list 'exec-path "D:/Softs/Install/Git/bin")
-  )
-
-                                        ; Lookup for aspell
-(when (file-exists-p "C:/local/Aspell/bin")
-  (add-to-list 'exec-path "C:/local/Aspell/bin")
-  )
 
 
 ;;------------------------------------------------------------------------------
@@ -292,6 +273,7 @@
    '(csv-invisibility-default nil)
    )
   )
+
 ;; PHP
 (use-package php-mode
   :mode "\\.php\\'")
