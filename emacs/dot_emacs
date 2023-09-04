@@ -84,7 +84,7 @@
 
 ;; Unix-mode
 (prefer-coding-system 'utf-8-unix)
-;;(setq coding-system-for-read 'utf-8-unix)
+(setq coding-system-for-read 'utf-8-unix)
 (setq coding-system-for-write 'utf-8-unix)
 (defalias 'dos2unix 'delete-trailing-whitespace)
 
@@ -194,6 +194,7 @@
 (c-set-offset 'brace-list-open '0)
 (c-set-offset 'statement-case-open '0)
 (c-set-offset 'inextern-lang 0)
+(c-set-offset 'inline-open 0)
 (setq c-default-style "linux" c-basic-offset 2)
 
 ;; XML mode
