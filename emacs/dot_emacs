@@ -115,6 +115,9 @@
 (global-set-key [(ctrl shift right)] 'forward-sexp)
 (global-set-key [(ctrl shift left)] 'backward-sexp)
 
+;; Delete trailing whitespaces when saving
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+
 ;;------------------------------------------------------------------------------
 ;; Commands behavior
 ;;------------------------------------------------------------------------------
@@ -195,7 +198,7 @@
 (c-set-offset 'statement-case-open '0)
 (c-set-offset 'inextern-lang 0)
 (c-set-offset 'inline-open 0)
-(setq c-default-style "linux" c-basic-offset 2)
+;;(setq c-default-style "linux" c-basic-offset 2)
 
 ;; XML mode
 (use-package nxml-mode
@@ -347,4 +350,3 @@ prompt the user for a coding system."
   (interactive)
   (let ((sort-fold-case t))
     (call-interactively 'sort-lines)))
-
