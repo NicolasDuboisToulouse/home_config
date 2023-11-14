@@ -135,10 +135,16 @@ eval `dircolors ~/.dircolors`
 # SSH that force bash and forward display from windows host (ssh -X or -Y not working)
 function wssh () {
     host=$1
-    user=$(whoami | awk '{print tolower($0)}')
     if [ -z $host ]; then
         echo -n "Host: "
         read host
+    fi
+
+    if echo $host | grep '@' >/dev/null; then
+        addr=$host
+    else
+        user=$(whoami | awk '{print tolower($0)}')
+        addr=${user}@$host
     fi
 
     display=$DISPLAY
@@ -147,5 +153,5 @@ function wssh () {
         display=$(ipconfig | grep IPv4 | grep -v '192.168' | head -n 1 | awk '{ print $16 }')":0"
     fi
 
-    ssh $user@$host -t "export DISPLAY=$display; bash"
+    ssh $addr -t "export DISPLAY=$display; bash"
 }
