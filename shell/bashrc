@@ -115,15 +115,14 @@ if [ -e ~/perl5/bin ]; then
     PATH=${PERL_HOME}/bin:$PATH
 fi
 
-if [ -e /etc/redhat-release ]; then
-    if grep '5\.' /etc/redhat-release >/dev/null; then
-        PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
-    fi
-    if grep '7\.' /etc/redhat-release >/dev/null; then
-        . /home/to41974/tools/emacs/emacs_env
-    fi
-    # else use system version
+# Emacs
+if [ -e /etc/redhat-release ] && grep '5\.' /etc/redhat-release >/dev/null; then
+    PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
+elif [ -e /home/CrossTools/Cots/emacs/Linux64_emacs-29.1/bin/emacs ]; then
+    PATH=/home/CrossTools/Cots/emacs/Linux64_emacs-29.1/bin:$PATH
 fi
+# else use system version
+
 
 export PATH
 
