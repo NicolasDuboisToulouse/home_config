@@ -19,7 +19,7 @@
 [push]
     ; Only push the working branch
     default = simple
-    
+
 [rebase]
     ; no automatic stash on rebase (this is the default)
     autoStash = false
@@ -37,3 +37,4 @@
 [alias]
     tree = log --graph --decorate --pretty=oneline --abbrev-commit
     show-files = diff-tree --no-commit-id --name-only -r
+    fetchp = fetch --prune --prune-tags
