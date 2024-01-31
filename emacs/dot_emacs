@@ -178,7 +178,9 @@
 ;; npm i -g typescript-language-server
 ;; npm i -g typescript
 ;;------------------------------------------------------------------------------
-(use-package eglot)
+(use-package eglot
+  :init
+  (setq project-vc-extra-root-markers '("tsconfig.json")))
 
 (use-package company
   :after eglot
