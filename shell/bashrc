@@ -89,22 +89,6 @@ if [ -e /home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin/git ]; then
     export PATH=/home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin:$PATH
 fi
 
-if [ -e /home/aspic_de/COTS/JDK/jdk1.8.0_65-64b ]; then
-    export JAVA_HOME=/home/aspic_de/COTS/JDK/jdk1.8.0_65-64b
-    PATH=$JAVA_HOME/bin:$PATH
-fi
-
-if [ -d /home/CrossTools/Cots/CMAKE/V3.22.0/BINARIES/Linux64/bin ]; then
-    export CMAKE_HOME=/home/CrossTools/Cots/CMAKE/V3.22.0/BINARIES/Linux64
-    PATH=$CMAKE_HOME/bin:$PATH
-fi
-
-if [ -d /home/ioland/REF/COTS/NINJA/V1.8.2/BINARIES/Linux ]; then
-    NINJA_BIN=/home/ioland/REF/COTS/NINJA/V1.8.2/BINARIES/Linux
-    PATH=$NINJA_BIN:$PATH
-fi
-
-
 # Local perl libraries
 if [ -e ~/perl5/bin ]; then
     PERL_HOME=~/perl5
@@ -127,8 +111,11 @@ fi
 export PATH
 
 # Ls colors (overwrite default color for directories and links)
-[ ! -e ~/.dircolors ] && (dircolors -p; echo; echo 'DIR 01;36'; echo 'LINK 01;33') > ~/.dircolors
-eval `dircolors ~/.dircolors`
+if [ ! -e ~/.dircolors ]; then
+    (dircolors -p; echo; echo 'DIR 01;36'; echo 'LINK 01;33') > ~/.dircolors
+    [ -d /workspaces ] && (echo 'OTHER_WRITABLE 00'; echo 'EXEC 00') >> ~/.dircolors
+fi
+eval `dircolors -b ~/.dircolors`
 
 
 # SSH that force bash and forward display from windows host (ssh -X or -Y not working)
