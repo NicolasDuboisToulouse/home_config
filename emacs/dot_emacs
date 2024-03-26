@@ -315,6 +315,10 @@
   :mode "/Dockerfile\\'"
   )
 
+;; Flatbuffers
+(use-package flatbuffers-mode
+  :mode "\\.fbs\\'"
+  )
 
 
 ;;------------------------------------------------------------------------------
