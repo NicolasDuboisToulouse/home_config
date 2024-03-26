@@ -51,6 +51,7 @@
 ;;------------------------------------------------------------------------------
 ;; Hide start-up message
 (setq inhibit-startup-message t)
+(tool-bar-mode -1)
 
 ;; title
 (setq frame-title-format (quote ("emacs - " (buffer-file-name "%f" ("%b")))))
@@ -65,11 +66,12 @@
 
 ;; Theme
 ;;(set-default-font "7*14")
-(set-foreground-color "gray")
-(set-background-color "black")
-(set-cursor-color "darkslateblue")
+;(set-foreground-color "gray")
+;(set-background-color "black")
+;(set-cursor-color "darkslateblue")
 ;;(set-face-background 'modeline "darkslateblue")
 ;;(set-face-foreground 'modeline "lemonchiffon")
+(load-theme 'modus-vivendi :no-confirm)
 
 ;; font-lock-mode (that may be replaced by tree-sitter when supported)
 (global-font-lock-mode 'on)
@@ -188,8 +190,15 @@
 )
 
 (use-package company-box
-  :hook (company-mode . company-box-mode))
+  :hook (company-mode . company-box-mode)
+  :bind ("C-<tab>" . company-complete)
+  )
 
+(use-package tramp
+  :ensure nil
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  )
 
 ;;------------------------------------------------------------------------------
 ;; Languages specific
@@ -288,6 +297,8 @@
 ;; Typescript & react TSX
 (use-package tsx-ts-mode
   :ensure nil  ; workaround issue with use-package-ensure for build-in packages
+  :mode "\\.js\\'"
+  :mode "\\.cjs\\'"
   :mode "\\.ts\\'"
   :mode "\\.tsx\\'"
   )
