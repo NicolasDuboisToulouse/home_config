@@ -193,6 +193,8 @@
   :hook (company-mode . company-box-mode)
   :bind ("C-<tab>" . company-complete)
   )
+(setq completion-ignore-case t)
+
 
 (use-package tramp
   :ensure nil
@@ -319,6 +321,20 @@
 (use-package flatbuffers-mode
   :mode "\\.fbs\\'"
   )
+
+;; Rust
+(use-package rustic
+  :config
+  (setq rustic-lsp-client 'eglot)
+  (setq rust-mode-treesitter-derive t)  ;; not sure that's working
+  (setq rustic-rustfmt-args "--edition=2021")
+  (setq rustic-format-on-save t)
+  (custom-set-faces
+   '(eglot-inlay-hint-face ((t (:inherit shadow)))))
+  )
+
+(use-package flymake-clippy
+  :hook (rust-mode . flymake-clippy-setup-backend))
 
 
 ;;------------------------------------------------------------------------------

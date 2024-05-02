@@ -14,9 +14,8 @@
     pager=less -r
 
     ; Run emacs in a virtual tty
-    editor = winpty emacs -nw
+    editor = emacs
 
 [credential]
     ; Store passwords on Windows
     helper = wincred
-

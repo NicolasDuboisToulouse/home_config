@@ -1,0 +1,5 @@
+[include]
+    path = ~/.config/git/inc_config_base.inc
+    path = ~/.config/git/inc_config_container.inc
+[safe]
+    directory = /workspaces/ONESRE_GIT
