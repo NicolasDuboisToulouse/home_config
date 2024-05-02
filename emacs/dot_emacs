@@ -195,6 +195,12 @@
   )
 (setq completion-ignore-case t)
 
+;; Display doc/help/errors in pop-up
+(use-package eldoc-box
+;;  :hook (eglot--managed-mode . eldoc-box-hover-mode)     ;; enable automatic pop-up
+  :init (setq eldoc-echo-area-use-multiline-p nil)       ;; pseudo-hide doc in mini-buffer
+  :bind ("C-h C-h" . eldoc-box-help-at-point)
+  )
 
 (use-package tramp
   :ensure nil
@@ -326,15 +332,28 @@
 (use-package rustic
   :config
   (setq rustic-lsp-client 'eglot)
-  (setq rust-mode-treesitter-derive t)  ;; not sure that's working
+;;  (setq rust-mode-treesitter-derive t)  ;; not sure that's working
+  (add-to-list 'eglot-server-programs
+               '((rust-ts-mode rust-mode) .
+                 ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
   (setq rustic-rustfmt-args "--edition=2021")
   (setq rustic-format-on-save t)
   (custom-set-faces
    '(eglot-inlay-hint-face ((t (:inherit shadow)))))
   )
 
-(use-package flymake-clippy
-  :hook (rust-mode . flymake-clippy-setup-backend))
+;; (defun /eglot-managed-mode-initialize ()
+;;   (setq-local
+;;     eldoc-documentation-functions
+;;     (list
+;;      ;;#'eglot-signature-eldoc-function
+;;      ;; #'eglot-hover-eldoc-function
+;;      #'flymake-eldoc-function
+;;      ))
+;;   )
+
+;; (add-hook 'eglot-managed-mode-hook #'/eglot-managed-mode-initialize)
+
 
 
 ;;------------------------------------------------------------------------------
