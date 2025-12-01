@@ -1,2 +1,4 @@
 # Just run bashrc
 if [ -f ~/.bashrc ]; then . ~/.bashrc; fi
+if [ -s ~/.nvs/nvs.sh ]; then  . ~/.nvs/nvs.sh; nvs use 20.11.0; fi
+if [ -s ~/.cargo/env ]; then . ~/.cargo/env; fi

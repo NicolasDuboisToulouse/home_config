@@ -336,7 +336,7 @@
   (add-to-list 'eglot-server-programs
                '((rustic-mode rust-ts-mode rust-mode) .
                  ("rust-analyzer" :initializationOptions (:check (:command "clippy")))))
-  (setq rustic-rustfmt-args "--edition=2021")
+  (setq rustic-rustfmt-args "--edition=2024")
   (setq rustic-format-on-save t)
   (custom-set-faces
    '(eglot-inlay-hint-face ((t (:inherit shadow)))))
