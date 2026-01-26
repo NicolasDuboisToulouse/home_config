@@ -32,6 +32,7 @@
 ;; (eval-when-compile (require 'use-package))
 
 ;; Auto-install missing packages
+(setq package-gnupghome-dir "~/.emacs.d/elpa/gnupg")
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 

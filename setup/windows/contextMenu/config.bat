@@ -1,7 +1,3 @@
-@set EMACS_HOME=C:\local\emacs
+@set EMACS_HOME=%HOME%\cots\emacs-30.2
 @set ASCIIDOCFX_BIN=C:\Program Files\AsciidocFX\AsciidocFX.exe
-@set RUBY_BIN_DIR=C:\local\Ruby\bin
-@set MSYS2_HOME=C:\local\msys2
-
-
-
+@set RUBY_BIN_DIR=%HOME%\cots\Ruby\bin

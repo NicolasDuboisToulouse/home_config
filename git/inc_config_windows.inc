@@ -14,7 +14,8 @@
     pager=less -r
 
     ; Run emacs in a virtual tty
-    editor = emacs
+    ; editor = emacs -nw
+     editor = 'C:/Program Files/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin
 
 [credential]
     ; Store passwords on Windows
