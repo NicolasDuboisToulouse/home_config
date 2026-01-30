@@ -74,6 +74,18 @@ export PROMPT_COMMAND=__snoopy_set_prompt_command
 # Environement
 # -----------------------------------------------------------------------------
 
+# Add dir to PATH if not already present
+pathadd() {
+    if [ -d "$1" ] && [[ ! $PATH =~ (^|:)$1(:|$) ]]; then
+        PATH+=:$1
+    fi
+}
+pathprepend() {
+    if [ -d "$1" ] && [[ ! $PATH =~ (^|:)$1(:|$) ]]; then
+        PATH+=:$1
+    fi
+}
+
 # if environement is set, we needn't to set it again
 # (variables are preserved for new shell wich is not the case for alias and functions)
 [ ! -z $SNOOPY_ENV_IS_SET ] && return
@@ -86,7 +98,7 @@ export SNOOPY_ENV_IS_SET=1
 [ -e ~/.local_cots ] && source ~/.local_cots
 
 if [ -e /home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin/git ]; then
-    export PATH=/home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin:$PATH
+    pathprepend /home/CrossTools/Cots/Git/git-2.35.1/BINARIES/Linux/bin
 fi
 
 # Local perl libraries
@@ -96,14 +108,14 @@ if [ -e ~/perl5/bin ]; then
     export PERL_LOCAL_LIB_ROOT=${PERL_HOME}
     export PERL_MB_OPT="--install_base ${PERL_HOME}"
     export PERL_MM_OPT=INSTALL_BASE=${PERL_HOME}
-    PATH=${PERL_HOME}/bin:$PATH
+    pathadd ${PERL_HOME}/bin
 fi
 
 # Emacs
 if [ -e /etc/redhat-release ] && grep '5\.' /etc/redhat-release >/dev/null; then
-    PATH=/home/to104437/bin/emacs/V24.5/RHEL5/bin:$PATH
+    pathadd /home/to104437/bin/emacs/V24.5/RHEL5/bin
 elif [ -e /home/CrossTools/Cots/emacs/Linux64_emacs-29.1/bin/emacs ]; then
-    PATH=/home/CrossTools/Cots/emacs/Linux64_emacs-29.1/bin:$PATH
+    pathadd /home/CrossTools/Cots/emacs/Linux64_emacs-29.1/bin
 fi
 # else use system version
 

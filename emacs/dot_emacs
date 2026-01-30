@@ -24,13 +24,6 @@
 ;; For ugly environment
 ;; (setq package-check-signature nil)
 
-;; Bootstrap use-package (emacs < 19)
-;; (package-initialize)
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; (eval-when-compile (require 'use-package))
-
 ;; Auto-install missing packages
 (setq package-gnupghome-dir "~/.emacs.d/elpa/gnupg")
 (require 'use-package-ensure)
@@ -140,6 +133,20 @@
 ;; Command completion
 (icomplete-mode)
 
+;;------------------------------------------------------------------------------
+;; eglot LPS
+;;------------------------------------------------------------------------------
+(use-package eglot
+  :config
+  (defun my/setup-eglot-flymake-backend ()
+    "Enable eglot's flymake backend manually."
+    (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t))
+
+  (with-eval-after-load 'eglot
+    (setopt eglot-autoshutdown t)
+    ;; let me manage flymake on my own
+    (add-to-list 'eglot-stay-out-of 'flymake)))
+
 
 ;;------------------------------------------------------------------------------
 ;; Tools
@@ -154,6 +161,7 @@
 (use-package flyspell
   :defer t
   :init
+  (setq flymake-eslint-defer-binary-check 1)
   (add-hook 'flyspell-mode-hook 'flyspell-buffer)
   )
 
@@ -173,23 +181,11 @@
   :config
   (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
 
-
-;;------------------------------------------------------------------------------
-;; eglot IDE
-;; activate with M-x eglot
-;; eglot is just the client. A server is needed. For node/typescript, install globally:
-;; npm i -g typescript-language-server
-;; npm i -g typescript
-;;------------------------------------------------------------------------------
-(use-package eglot
-  :init
-  (setq project-vc-extra-root-markers '("tsconfig.json")))
-
+;; Code completion
 (use-package company
   :after eglot
   :hook (eglot-managed-mode . company-mode)
 )
-
 (use-package company-box
   :hook (company-mode . company-box-mode)
   :bind ("C-<tab>" . company-complete)
@@ -203,6 +199,7 @@
   :bind ("C-h C-h" . eldoc-box-help-at-point)
   )
 
+;; SSH remote (for docker as example)
 (use-package tramp
   :ensure nil
   :config
@@ -249,6 +246,7 @@
 	(setq outline-level 'yaml-outline-level))
   )
 
+;; Shell
 (use-package shell-script-mode
   :ensure nil  ; workaround issue with use-package-ensure for build-in packages
   :mode "bashrc"
@@ -304,13 +302,17 @@
 
 
 ;; Typescript & react TSX
-(use-package tsx-ts-mode
-  :ensure nil  ; workaround issue with use-package-ensure for build-in packages
-  :mode "\\.js\\'"
-  :mode "\\.cjs\\'"
-  :mode "\\.ts\\'"
-  :mode "\\.tsx\\'"
+(use-package flymake-eslint
+  :ensure t
   )
+;; This does not work. Workaround: set node_module/.bin in PATH.
+;(setq flymake-eslint-executable-args "eslint --no-color --stdin")
+;(setq flymake-eslint-executable-name "npx")
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
+(add-hook 'tsx-ts-mode-hook #'eglot-ensure)
+(add-hook 'tsx-ts-mode-hook #'my/setup-eglot-flymake-backend)
+(add-hook 'tsx-ts-mode-hook #'flymake-eslint-enable)
 
 ;; JSON
 (use-package json-ts-mode
