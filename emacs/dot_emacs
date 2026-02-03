@@ -1,4 +1,4 @@
-;; (setq debug-on-error t)
+; (setq debug-on-error t)
 
 ;;------------------------------------------------------------------------------
 ;; Package configuration
@@ -304,15 +304,21 @@
 ;; Typescript & react TSX
 (use-package flymake-eslint
   :ensure t
+  :config
+  (setq-local fm-project-root (locate-dominating-file
+                               (or (buffer-file-name) default-directory)
+                               "node_modules"))
+  (add-to-list 'exec-path (concat fm-project-root "node_modules/.bin")))
+(defun tsx-hooks()
+  (interactive)
+  (eglot-ensure)
+  (my/setup-eglot-flymake-backend)
+  (flymake-eslint-enable)
   )
-;; This does not work. Workaround: set node_module/.bin in PATH.
-;(setq flymake-eslint-executable-args "eslint --no-color --stdin")
-;(setq flymake-eslint-executable-name "npx")
-(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
-(add-to-list 'auto-mode-alist '("\\.ts?\\'" . tsx-ts-mode))
-(add-hook 'tsx-ts-mode-hook #'eglot-ensure)
-(add-hook 'tsx-ts-mode-hook #'my/setup-eglot-flymake-backend)
-(add-hook 'tsx-ts-mode-hook #'flymake-eslint-enable)
+(add-hook 'tsx-ts-mode-hook          #'tsx-hooks)
+(add-hook 'typescript-ts-mode-hook   #'tsx-hooks)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'"  . typescript-ts-mode))
 
 ;; JSON
 (use-package json-ts-mode
