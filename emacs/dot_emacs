@@ -1,4 +1,5 @@
-; (setq debug-on-error t)
+; -*- lexical-binding: nil; -*-
+;; (setq debug-on-error t)
 
 ;;------------------------------------------------------------------------------
 ;; Package configuration
